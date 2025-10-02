@@ -1,10 +1,16 @@
 import LoginLayout from '@/layouts/LoginLayout';
 import { useForm, usePage } from '@inertiajs/react';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 export default function LoginPage() {
     const { flash } = usePage().props as {
         flash?: { title: string; message: string; icon: 'success' | 'error' };
+    };
+
+    const [mostrarContraseña, setMostrarContraseña] = useState(false);
+
+    const alternarMostrarContraseña = () => {
+        setMostrarContraseña(!mostrarContraseña);
     };
     const { data, setData, post } = useForm({
         usuario: '',
@@ -36,6 +42,9 @@ export default function LoginPage() {
         }
     }, [flash]);
 
+    const mostrar = <img src="/images/ver.png" alt="Mostrar" />;
+    const ocultar = <img src="/images/no-ver.png" alt="Ocultar" />;
+
     return (
         <LoginLayout>
             <form
@@ -50,18 +59,30 @@ export default function LoginPage() {
                     id="usuario"
                     className="mb-4 rounded-[8px] border border-gray-300 bg-[#DADADA] p-3 outline-none focus:border-gray-400"
                     value={data.usuario}
+                    placeholder="Usuario"
                     onChange={(e) => setData('usuario', e.target.value)}
                 />
                 <label className="text-[22px]" htmlFor="password">
                     Contraseña
                 </label>
-                <input
-                    type="password"
-                    id="password"
-                    className="mb-5 rounded-[8px] border border-gray-300 bg-[#DADADA] p-3 outline-none focus:border-gray-400"
-                    value={data.password}
-                    onChange={(e) => setData('password', e.target.value)}
-                />
+                <div className="relative">
+                    <input
+                        type={mostrarContraseña ? 'text' : 'password'}
+                        id="password"
+                        placeholder="Contraseña"
+                        className="mb-5 min-w-full rounded-[8px] border border-gray-300 bg-[#DADADA] p-3 outline-none focus:border-gray-400"
+                        value={data.password}
+                        onChange={(e) => setData('password', e.target.value)}
+                    />
+                    <button
+                        type="button"
+                        className="absolute top-1/3 right-3 w-8 -translate-y-1/2"
+                        tabIndex={-1}
+                        onClick={alternarMostrarContraseña}
+                    >
+                        {mostrarContraseña ? mostrar : ocultar}
+                    </button>
+                </div>
                 <div className="flex min-w-full justify-center">
                     <button
                         className="min-w-[60%] rounded-[8px] bg-[#0B0B0B] p-2 text-[22px] text-white transition duration-300 ease-in-out hover:-translate-y-1 hover:bg-[#282727]"

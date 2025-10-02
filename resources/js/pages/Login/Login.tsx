@@ -3,6 +3,7 @@ import { useForm, usePage } from '@inertiajs/react';
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 export default function LoginPage() {
+
     const { flash } = usePage().props as {
         flash?: { title: string; message: string; icon: 'success' | 'error' };
     };
@@ -12,6 +13,7 @@ export default function LoginPage() {
     const alternarMostrarContraseña = () => {
         setMostrarContraseña(!mostrarContraseña);
     };
+    
     const { data, setData, post } = useForm({
         usuario: '',
         password: '',

@@ -1,7 +1,12 @@
-export default function SistemaLayout({ children }: { children: React.ReactNode }) {
+import BarraDeNavegacion from '@/components/ui/BarraDeNavegacion';
+export default function SistemaLayout({children,}: {children: React.ReactNode;}) {
     return (
-        <div className="h-screen">
-            {children}
-        </div>
+        <>
+            
+            <div className="h-screen flex">
+                <BarraDeNavegacion />
+                {children}
+                </div>
+        </>
     );
 }

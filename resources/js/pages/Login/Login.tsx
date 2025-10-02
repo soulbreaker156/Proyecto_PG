@@ -47,8 +47,8 @@ export default function LoginPage() {
         }
     }, [flash]);
 
-    const mostrar = <img src="/images/ver.png" alt="Mostrar" />;
-    const ocultar = <img src="/images/no-ver.png" alt="Ocultar" />;
+    const mostrar = <img src="/assets/icon/ver.png" alt="Mostrar" />;
+    const ocultar = <img src="/assets/icon/no-ver.png" alt="Ocultar" />;
 
     return (
         <LoginLayout>

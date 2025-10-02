@@ -6,7 +6,7 @@ export default function BarraDeNavegacion() {
                     <img className="object-cover" src="/images/KaijuKing.jpeg" alt="Profile"/>
                 </div>
 
-                <nav className="w-full text-white">
+                <nav className="w-full text-white text-2xl">
                     <ul>
                         <li>
                             <a href="/dashboard">Dashboard</a>

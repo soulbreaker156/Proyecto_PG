@@ -18,6 +18,8 @@ return new class extends Migration
             $table->bigInteger('nit')->unique();
             $table->string('direccion',200)->nullable();
             $table->unsignedBigInteger('fk_id_rol');
+            $table->unsignedBigInteger('fk_id_imagen')->nullable();
+            $table->foreign('fk_id_imagen')->references('id_imagen')->on('imagenes')->onDelete('cascade');
             $table->foreign('fk_id_rol')->references('id_rol')->on('roles')->onDelete('cascade');
             $table->timestamps();
         

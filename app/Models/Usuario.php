@@ -16,6 +16,7 @@ class Usuario extends Authenticatable
         'password',
         'nit',
         'direccion',
+        'fk_id_imagen',
         'fk_id_rol',
     ];
     protected $hidden = [
@@ -43,5 +44,11 @@ class Usuario extends Authenticatable
     public function proformas()
     {
         return $this->hasMany(Proforma::class, 'fk_id_usuario', 'id_usuario');
+    }
+
+    //Relacion con el modelo Imagen
+    public function imagenes()
+    {
+        return $this->belongsTo(Imagen::class, 'fk_id_imagen', 'id_imagen');
     }
 }

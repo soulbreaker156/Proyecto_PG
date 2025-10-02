@@ -1,5 +1,6 @@
 import LoginLayout from '@/layouts/LoginLayout';
 import { useForm, usePage } from '@inertiajs/react';
+import { Inertia } from '@inertiajs/inertia';
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 export default function LoginPage() {
@@ -13,7 +14,7 @@ export default function LoginPage() {
     const alternarMostrarContraseña = () => {
         setMostrarContraseña(!mostrarContraseña);
     };
-    
+
     const { data, setData, post } = useForm({
         usuario: '',
         password: '',
@@ -32,6 +33,8 @@ export default function LoginPage() {
                 icon: flash.icon,
                 timer: 1500,
                 showConfirmButton: false,
+            }).then(() => {
+                Inertia.visit('/dashboard');
             });
         } else if (flash?.icon === 'error') {
             Swal.fire({

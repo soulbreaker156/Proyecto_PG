@@ -16,7 +16,7 @@ class UsuarioSeeder extends Seeder
     {
         Usuario::create([
             'usuario' => 'admin',
-            'contrasena' => Hash::make('admin123'),
+            'password' => Hash::make('admin123'),
             'nit' => '123456789',
             'direccion' => 'Calle Falsa 123',
             'fk_id_rol' => 1,

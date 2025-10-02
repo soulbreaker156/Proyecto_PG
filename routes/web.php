@@ -14,12 +14,11 @@ Route::get('/SinAcceso', function () {
     return Inertia::render('SinAcceso/SinAcceso');
 })->name('sinacceso');
 
+//Rutas de autenticación
 Route::post('/login', [LoginController::class, 'iniciarSesion'])->name('login');
+Route::get('/logout', [LoginController::class, 'cerrarSesion'])->name('logout');
 
 //Rutas protegidas por el middleware AccesoPagina para que solo usuarios autenticados puedan acceder
 Route::middleware([AccesoPagina::class])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
-
-
-

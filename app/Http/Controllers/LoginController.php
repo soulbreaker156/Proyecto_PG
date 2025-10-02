@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class LoginController extends Controller
 {
@@ -13,23 +14,34 @@ class LoginController extends Controller
             'usuario' => 'required|max:50',
             'password' => 'required|min:2',
         ]);
-
-        // Usar Auth::attempt con las claves correctas
-        if (Auth::attempt([
-            'usuario' => $credentials['usuario'],
-            'password' => $credentials['password'],
-        ])) {
-            return redirect()->route('home')->with('flash', [
-                'title' => 'Éxito',
-                'icon' => 'success',
-                'message' => 'login exitoso'
+        try {
+            //Intentar autenticar al usuario
+            if (Auth::attempt([
+                'usuario' => $credentials['usuario'],
+                'password' => $credentials['password'],
+            ])) {
+                $request->session()->regenerate(); // Cambia el ID de sesión
+                return Inertia::render('Login/Login')->with('flash', [
+                    'title' => 'Éxito',
+                    'icon' => 'success',
+                    'message' => 'login exitoso'
+                ]);
+            }
+            // Si la autenticación falla
+        } catch (\Exception $e) {
+            return Inertia::render('Login/Login')->with('flash', [
+                'title' => 'Error',
+                'icon' => 'error',
+                'message' => 'Error al iniciar sesión: ' . $e->getMessage()
             ]);
         }
-
-        return redirect()->route('home')->with('flash', [
-            'title' => 'Error',
-            'icon' => 'error',
-            'message' => 'Credenciales inválidas'
-        ]);
+    }
+    public function cerrarSesion(Request $request)
+    {
+        //Cerrar sesión
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('home');
     }
 }

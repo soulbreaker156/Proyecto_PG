@@ -31,7 +31,7 @@ export default function LoginPage() {
                 title: flash.title,
                 text: flash.message,
                 icon: flash.icon,
-                timer: 1500,
+                timer: 2500,
                 showConfirmButton: false,
             }).then(() => {
                 Inertia.visit('/dashboard');

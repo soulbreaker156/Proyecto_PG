@@ -15,11 +15,10 @@ class ProductoSeeder extends Seeder
     {
         Producto::create([
             'producto' => 'Lapiz',
-            'imagen_producto' => base64_encode(file_get_contents(public_path('/assets/productos/lapiz.png'))),
             'descripcion' => 'Lapiz de grafito HB',
             'precio' => 0.50,
             'cantidad' => 100,
+            'fk_id_imagen' => 1,
         ]);
-        
     }
 }

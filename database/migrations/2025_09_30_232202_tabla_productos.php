@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('productos', function (Blueprint $table){
             $table->id('id_producto');
             $table->string('producto',100);
-            $table->binary('imagen_producto')->nullable();
             $table->string('descripcion',255)->nullable();
             $table->enum('estado', ['mostrado', 'oculto'])->default('mostrado');
             $table->decimal('precio',10,2);
             $table->integer('cantidad');
+            $table->unsignedBigInteger('fk_id_imagen')->nullable();
+            $table->foreign('fk_id_imagen')->references('id_imagen')->on('imagenes_productos')->onDelete('cascade');
             $table->timestamps();
         });
     }

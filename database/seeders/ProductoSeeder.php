@@ -18,6 +18,7 @@ class ProductoSeeder extends Seeder
             'imagen_producto' => base64_encode(file_get_contents(public_path('/assets/productos/lapiz.png'))),
             'descripcion' => 'Lapiz de grafito HB',
             'precio' => 0.50,
+            'cantidad' => 100,
         ]);
         
     }

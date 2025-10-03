@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('descripcion',255)->nullable();
             $table->enum('estado', ['mostrado', 'oculto'])->default('mostrado');
             $table->decimal('precio',10,2);
+            $table->integer('cantidad');
             $table->timestamps();
         });
     }

@@ -5,7 +5,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Middleware\AccesoPagina;
-
+use App\Http\Controllers\InventarioController;
 Route::get('/', function () {
     return Inertia::render('Login/Login');
 })->name('home');
@@ -21,4 +21,5 @@ Route::get('/logout', [LoginController::class, 'cerrarSesion'])->name('logout');
 //Rutas protegidas por el middleware AccesoPagina para que solo usuarios autenticados puedan acceder
 Route::middleware([AccesoPagina::class])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/inventario', [InventarioController::class, 'index'])->name('inventario');
 });

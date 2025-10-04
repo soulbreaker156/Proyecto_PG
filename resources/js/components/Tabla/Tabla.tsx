@@ -1,46 +1,55 @@
 import DataTable from 'react-data-table-component';
+import { Producto, ImagenProducto } from '@/components/Interfaces/interfaceInventario';
 
-export default function Tabla() {
-    const data = [
-        { id: 1, nombre: 'Jostyn', edad: 22 },
-        { id: 2, nombre: 'María', edad: 25 },
-        { id: 3, nombre: 'Carlos', edad: 30 },
-    ];
+export default function Tabla({ productos, imagenes }: { productos?: Producto[]; imagenes?: ImagenProducto[] }) {
+
+    const data = productos?.map((producto) => ({
+        id: producto.id_producto,
+        producto: producto.producto,
+        descripcion: producto.descripcion,
+        precio: producto.precio,
+        cantidad: producto.cantidad,
+        imagen:  (() => {
+            const img = imagenes?.find((img) => img.id_imagen === producto.fk_id_imagen);
+            return img ? <img src={img.imagen} alt="imagen"/>: 'No image';
+        })(),
+
+    })) || [];
 
     const columns = [
         {
             name: 'ID',
-            selector: (row) => row.id,
+            selector: (row: any) => row.id,
             sortable: true,
         },
         {
             name: 'Producto',
-            selector: (row) => row.producto,
+            selector: (row: any) => row.producto,
             sortable: true,
         },
         {
             name: 'Imagen',
-            selector: (row) => row.imagen_producto,
+            selector: (row: any) => row.imagen,
             sortable: true,
         },
         {
             name: 'Descripción',
-            selector: (row) => row.descripcion,
+            selector: (row: any) => row.descripcion,
             sortable: true,
         },
         {
             name: 'Precio',
-            selector: (row) => row.precio,
+            selector: (row: any) => row.precio,
             sortable: true,
         },
         {
             name: 'Cantidad',
-            selector: (row) => row.cantidad,
+            selector: (row: any) => row.cantidad,
             sortable: true,
         },
     ];
     return (
-        <div className="ml-[15%] w-full p-10">
+        <div>
             <div>
                 <DataTable
                     columns={columns}

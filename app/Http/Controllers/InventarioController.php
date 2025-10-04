@@ -7,7 +7,6 @@ use Inertia\Inertia;
 use App\Models\Producto;
 use App\Models\ImagenProducto;
 
-use function PHPSTORM_META\map;
 
 class InventarioController extends Controller
 {
@@ -34,6 +33,31 @@ class InventarioController extends Controller
         ])->get();
 
         return Inertia::render('Inventario/Inventario', [
+            'productos' => $productos,
+            'imagenes' => $imagenes,
+        ]);
+    }
+    public function editar(Request $request){
+        $id = $request->input('id');
+        $imagenes = ImagenProducto::all()->where('id_imagen', $id)->map(function ($img) {
+            $binario = is_resource($img->imagen_producto)
+                ? stream_get_contents($img->imagen_producto)
+                : $img->imagen_producto;
+            return [
+                'id_imagen' => $img->id_imagen,
+                'imagen' => 'data:image/jpeg;base64,' . $binario,
+            ];
+        });
+
+        $productos = Producto::select([
+            'id_producto',
+            'producto',
+            'descripcion',
+            'precio',
+            'cantidad',
+        ])->where('id_producto', $id)->get();
+
+        return Inertia::render('EditarProducto/EditarProducto', [
             'productos' => $productos,
             'imagenes' => $imagenes,
         ]);

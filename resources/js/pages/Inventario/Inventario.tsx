@@ -7,7 +7,7 @@ export default function Inventario() {
     const { productos, imagenes } = usePage().props as { productos?: Producto[], imagenes?: ImagenProducto[] };
     return (
         <SistemaLayout>
-            <div className="flex w-[80%] justify-center p-10">
+            <div className="flex w-[95%] justify-center p-10">
                 <Tabla productos={productos} imagenes={imagenes} />
             </div>
         </SistemaLayout>

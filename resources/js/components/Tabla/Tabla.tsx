@@ -70,7 +70,10 @@ export default function Tabla({productos,imagenes,}: {productos?: Producto[];ima
                 <div className="flex gap-5">
                     <button
                         className="transition delay-75 ease-in-out hover:scale-150 h-full cursor-pointer"
-                        onClick={() => Inertia.visit('/inventario/editar', {data: { id: row.id }})}
+                        onClick={() => Inertia.visit('/inventario/editar', {data: { id: row.id }})}/*Se hace la visita a la pagina (la ruta es get) y 
+                        con inertia permite mandar informacion sin ser un post, 
+                        en este caso se manda el id del producto para asi solo enviar la informacion del producto a editar.
+                        */
                     >
                          <img
                             className="w-90"

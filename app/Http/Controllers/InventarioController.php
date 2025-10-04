@@ -37,9 +37,9 @@ class InventarioController extends Controller
             'imagenes' => $imagenes,
         ]);
     }
-    public function editar(Request $request){
+    public function editarDatos(Request $request){
         $id = $request->input('id');
-        $imagenes = ImagenProducto::all()->where('id_imagen', $id)->map(function ($img) {
+        $imagenes = ImagenProducto::where('id_imagen', $id)->get()->map(function ($img) {
             $binario = is_resource($img->imagen_producto)
                 ? stream_get_contents($img->imagen_producto)
                 : $img->imagen_producto;

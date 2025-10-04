@@ -16,5 +16,8 @@ class ImagenProductoSeeder extends Seeder
         ImagenProducto::create([
             'imagen_producto' => base64_encode(file_get_contents(public_path('/assets/productos/lapiz.png'))),
         ]);
+        ImagenProducto::create([
+            'imagen_producto' => base64_encode(file_get_contents(public_path('/assets/productos/cuaderno.png'))),
+        ]);
     }
 }

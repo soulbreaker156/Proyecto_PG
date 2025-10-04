@@ -20,5 +20,12 @@ class ProductoSeeder extends Seeder
             'cantidad' => 100,
             'fk_id_imagen' => 1,
         ]);
+        Producto::create([
+            'producto' => 'Cuaderno',
+            'descripcion' => 'Cuaderno de 100 hojas',
+            'precio' => 2.00,
+            'cantidad' => 50,
+            'fk_id_imagen' => 2,
+        ]);
     }
 }

@@ -5,8 +5,6 @@ import {Producto, ImagenProducto} from '@/components/Interfaces/interfaceInventa
 import '../../../css/datatable.css';
 export default function Inventario() {
     const { productos, imagenes } = usePage().props as { productos?: Producto[], imagenes?: ImagenProducto[] };
-    console.log(productos);
-    console.log(imagenes);
     return (
         <SistemaLayout>
             <div className="flex w-[80%] justify-center p-10">

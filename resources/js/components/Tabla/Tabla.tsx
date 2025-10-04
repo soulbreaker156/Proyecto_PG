@@ -1,20 +1,30 @@
+import {
+    ImagenProducto,
+    Producto,
+} from '@/components/Interfaces/interfaceInventario';
+import { useState } from 'react';
 import DataTable from 'react-data-table-component';
-import { Producto, ImagenProducto } from '@/components/Interfaces/interfaceInventario';
 
-export default function Tabla({ productos, imagenes }: { productos?: Producto[]; imagenes?: ImagenProducto[] }) {
-
-    const data = productos?.map((producto) => ({
-        id: producto.id_producto,
-        producto: producto.producto,
-        descripcion: producto.descripcion,
-        precio: producto.precio,
-        cantidad: producto.cantidad,
-        imagen:  (() => {
-            const img = imagenes?.find((img) => img.id_imagen === producto.fk_id_imagen);
-            return img ? <img src={img.imagen} alt="imagen"/>: 'No image';
-        })(),
-
-    })) || [];
+export default function Tabla({productos,imagenes,}: {productos?: Producto[];imagenes?: ImagenProducto[];}) 
+{
+    // Estado para la búsqueda
+    const [buscar, setBuscar] = useState('');
+    
+    // Se transforman los datos para la tabla
+    const data =
+        productos?.map((producto) => ({
+            id: producto.id_producto,
+            producto: producto.producto,
+            descripcion: producto.descripcion,
+            precio: producto.precio,
+            cantidad: producto.cantidad,
+            imagen: (() => {
+                const img = imagenes?.find(
+                    (img) => img.id_imagen === producto.fk_id_imagen,
+                );
+                return img ? <img src={img.imagen} alt="imagen" /> : 'No image';
+            })(),
+        })) || [];
 
     const columns = [
         {
@@ -48,16 +58,36 @@ export default function Tabla({ productos, imagenes }: { productos?: Producto[];
             sortable: true,
         },
     ];
+    
+
+    // Filtro para la busqueda
+    const datosFiltrados = data.filter((item) =>
+        item.producto.toLowerCase().includes(buscar.toLowerCase()),
+    );
+
     return (
-        <div>
+        <>
             <div>
-                <DataTable
-                    columns={columns}
-                    data={data}
-                    pagination
-                    highlightOnHover
-                />
+                <div className="w-[30vh] p-4">
+                    <input
+                        type="text"
+                        placeholder="Buscar producto..."
+                        value={buscar}
+                        onChange={(e) => setBuscar(e.target.value)}
+                        className="mb-3 w-full rounded border p-2"
+                    />
+                </div>
+
+                <div className="w-full overflow-x-auto">
+                    <DataTable
+                        columns={columns}
+                        data={datosFiltrados}
+                        pagination
+                        responsive
+                        highlightOnHover
+                    />
+                </div>
             </div>
-        </div>
+        </>
     );
 }

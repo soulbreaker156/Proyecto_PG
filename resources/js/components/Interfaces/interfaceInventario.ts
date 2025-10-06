@@ -9,5 +9,13 @@ export interface Producto {
 }
 export interface ImagenProducto {
     id_imagen: number;
-    imagen: string;
+    imagen: string | null;
+}
+export interface ProductoForm {
+    id: number;
+    producto: string;
+    descripcion: string;
+    precio: string | number;
+    cantidad: string | number;
+    imagen: File | null;
 }

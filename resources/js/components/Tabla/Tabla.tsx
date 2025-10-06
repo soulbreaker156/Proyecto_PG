@@ -17,23 +17,18 @@ export default function Tabla({productos,imagenes,}: {productos?: Producto[];ima
             id: producto.id_producto,
             producto: producto.producto,
             descripcion: producto.descripcion,
-            precio: producto.precio,
+            precio: `Q. ${producto.precio}`,
             cantidad: producto.cantidad,
             imagen: (() => {
                 const img = imagenes?.find(
                     (img) => img.id_imagen === producto.fk_id_imagen,
                 );
-                return img ? <img src={img.imagen} alt="imagen" /> : 'No image';
+                return img ? <img src={img.imagen || ''} alt="imagen" /> : 'No image';
             })(),
             estado: producto.estado,
         })) || [];
 
     const columns = [
-        {
-            name: 'ID',
-            selector: (row: any) => row.id,
-            sortable: true,
-        },
         {
             name: 'Producto',
             selector: (row: any) => row.producto,

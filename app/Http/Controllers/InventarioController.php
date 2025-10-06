@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Producto;
 use App\Models\ImagenProducto;
+use Illuminate\Support\Facades\DB;
 
 
 class InventarioController extends Controller
@@ -37,7 +38,8 @@ class InventarioController extends Controller
             'imagenes' => $imagenes,
         ]);
     }
-    public function editarDatos(Request $request){
+    public function editarDatos(Request $request)
+    {
         $id = $request->input('id');
         $imagenes = ImagenProducto::where('id_imagen', $id)->get()->map(function ($img) {
             $binario = is_resource($img->imagen_producto)
@@ -61,5 +63,55 @@ class InventarioController extends Controller
             'productos' => $productos,
             'imagenes' => $imagenes,
         ]);
+    }
+    public function actualizar(Request $request)
+    {
+        $datos = $request->validate([
+            'id' => 'required|integer',
+            'producto' => 'required|string|max:100',
+            'descripcion' => 'nullable|string|max:255',
+            'precio' => 'required|numeric',
+            'cantidad' => 'required|integer',
+            'imagen' => 'nullable|image|max:2048',
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            $producto = Producto::find($datos['id']);
+
+            // Actualiza la imagen solo si se envía una nueva
+            if ($request->hasFile('imagen')) {
+                $archivo = $request->file('imagen');
+                $nuevaImagen = base64_encode(file_get_contents($archivo->getRealPath()));
+                $guardarImagen = ImagenProducto::find($producto->fk_id_imagen);
+                $guardarImagen->imagen_producto = $nuevaImagen;
+                $guardarImagen->save();
+            }
+
+            // Actualiza los datos del producto
+            Producto::where('id_producto', $datos['id'])->update([
+                'producto' => $datos['producto'],
+                'descripcion' => $datos['descripcion'],
+                'precio' => (float)$datos['precio'],
+                'cantidad' => (int)$datos['cantidad'],
+            ]);
+
+            DB::commit();
+            return redirect()->route('inventario.index')->with('flash', [
+                'title' => 'Actualización exitosa',
+                'message' => 'El producto se ha actualizado correctamente.',
+                'icon' => 'success'
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('inventario.index')->with('flash', [
+                'title' => 'Error',
+                'message' => 'Hubo un problema al actualizar el producto.',
+                'icon' => 'error'
+            ]);
+        }
+
+     
     }
 }

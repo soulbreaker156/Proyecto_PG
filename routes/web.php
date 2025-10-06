@@ -21,6 +21,7 @@ Route::get('/logout', [LoginController::class, 'cerrarSesion'])->name('logout');
 //Rutas protegidas por el middleware AccesoPagina para que solo usuarios autenticados puedan acceder
 Route::middleware([AccesoPagina::class])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/inventario', [InventarioController::class, 'index'])->name('inventario');
+    Route::get('/inventario', [InventarioController::class, 'index'])->name('inventario.index');
     Route::get('/inventario/editar', [InventarioController::class, 'editarDatos'])->name('inventario.editar');
+    Route::post('/inventario/actualizar', [InventarioController::class, 'actualizar'])->name('inventario.actualizar');
 });

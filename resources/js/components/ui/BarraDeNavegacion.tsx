@@ -33,7 +33,7 @@ export default function BarraDeNavegacion() {
             <div className="fixed flex min-h-full w-1/6 flex-col items-center bg-[#736D6D] p-4">
                 <div className="mb-6 h-32 w-32 overflow-hidden rounded-full bg-white">
                     <img
-                        className="object-cover"
+                        className="object-fill"
                         src="/images/KaijuKing.jpeg"
                         alt="Profile"
                     />

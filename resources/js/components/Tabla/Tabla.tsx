@@ -2,15 +2,16 @@ import {
     ImagenProducto,
     Producto,
 } from '@/components/Interfaces/interfaceInventario';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import DataTable from 'react-data-table-component';
 import { Link } from '@inertiajs/react';
 import { Inertia } from '@inertiajs/inertia';
+import Swal from 'sweetalert2';
 
 export default function Tabla({productos,imagenes,}: {productos?: Producto[];imagenes?: ImagenProducto[];}) {
     // Estado para la búsqueda
     const [buscar, setBuscar] = useState('');
-
+    console.log(productos);
     // Se transforman los datos para la tabla
     const data =
         productos?.map((producto) => ({
@@ -26,7 +27,24 @@ export default function Tabla({productos,imagenes,}: {productos?: Producto[];ima
                 return img ? <img src={img.imagen || ''} alt="imagen" /> : 'No image';
             })(),
             estado: producto.estado,
+            estatus: producto.estatus,
         })) || [];
+
+        const botonBorrar = (id: number) => {
+            Swal.fire({
+                title: "Estas seguro?",
+                text: "No podras revertir esto!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Si, eliminarlo!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Inertia.post('/inventario/eliminar', { id: id });
+                        }
+                    });
+        };
 
     const columns = [
         {
@@ -78,10 +96,7 @@ export default function Tabla({productos,imagenes,}: {productos?: Producto[];ima
                     </button>
                     <button
                         className="transition delay-75 ease-in-out hover:scale-150 cursor-pointer"
-                        onClick={() => {
-                           
-                           
-                        }}
+                        onClick={() => {botonBorrar(row.id)}}
                     >
                         <img
                             className="w-50"

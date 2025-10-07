@@ -28,6 +28,7 @@ class InventarioController extends Controller
             'producto',
             'descripcion',
             'estado',
+            'estatus',
             'precio',
             'cantidad',
             'fk_id_imagen',
@@ -111,7 +112,30 @@ class InventarioController extends Controller
                 'icon' => 'error'
             ]);
         }
-
-     
+    }
+    public function eliminar(Request $request)
+    {
+        $id = $request->input('id');
+        $producto = Producto::find($id);
+        try {
+            DB::beginTransaction();
+            if ($producto) {
+                $producto->estatus = 'inactivo';
+                $producto->save();
+                DB::commit();
+                return redirect()->route('inventario.index')->with('flash', [
+                    'title' => 'Eliminación exitosa',
+                    'message' => 'El producto se ha eliminado correctamente.',
+                    'icon' => 'success'
+                ]);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('inventario.index')->with('flash', [
+                'title' => 'Error',
+                'message' => 'Hubo un problema al eliminar el producto.',
+                'icon' => 'error'
+            ]);
+        }
     }
 }

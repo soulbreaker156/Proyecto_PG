@@ -3,6 +3,7 @@ export interface Producto {
     producto: string;
     descripcion: string;
     estado: 'mostrado' | 'oculto';
+    estatus: 'activo' | 'inactivo';
     precio: number;
     cantidad: number;
     fk_id_imagen: number;

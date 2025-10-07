@@ -31,7 +31,7 @@ class InventarioController extends Controller
             'precio',
             'cantidad',
             'fk_id_imagen',
-        ])->get();
+        ])->where('estatus', 'activo')->get();
 
         return Inertia::render('Inventario/Inventario', [
             'productos' => $productos,

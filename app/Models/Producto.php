@@ -12,6 +12,7 @@ class Producto extends Model
         'producto', 
         'descripcion', 
         'estado',
+        'estatus',
         'precio',
         'cantidad',
         'fk_id_imagen', 

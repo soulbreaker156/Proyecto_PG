@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('producto',100);
             $table->string('descripcion',255)->nullable();
             $table->enum('estado', ['mostrado', 'oculto'])->default('mostrado');
+            $table->enum('estatus', ['activo', 'inactivo'])->default('activo');
             $table->decimal('precio',10,2);
             $table->integer('cantidad');
             $table->unsignedBigInteger('fk_id_imagen')->nullable();

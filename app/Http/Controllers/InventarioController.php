@@ -90,7 +90,6 @@ class InventarioController extends Controller
                 $guardarImagen->save();
             }
 
-            // Actualiza los datos del producto
             Producto::where('id_producto', $datos['id'])->update([
                 'producto' => $datos['producto'],
                 'descripcion' => $datos['descripcion'],
@@ -145,7 +144,6 @@ class InventarioController extends Controller
         try {
             DB::beginTransaction();
             if ($producto) {
-                // Alterna el estado entre 'mostrado' y 'oculto'
                 $producto->estado = ($producto->estado === 'mostrado') ? 'oculto' : 'mostrado';
                 $producto->save();
                 DB::commit();

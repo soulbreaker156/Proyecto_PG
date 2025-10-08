@@ -1,6 +1,6 @@
 import SistemaLayout from '@/layouts/SistemaLayout/SistemaLayout';
 import Tabla from '@/components/Tabla/Tabla';
-import { usePage } from '@inertiajs/react';
+import { usePage, Link, Head } from '@inertiajs/react';
 import { useEffect } from 'react';
 import {Producto, ImagenProducto} from '@/components/Interfaces/interfaceInventario';
 import '../../../css/datatable.css';
@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 export default function Inventario() {
     const { productos, imagenes } = usePage().props as { productos?: Producto[], imagenes?: ImagenProducto[] };
     const { flash } = usePage().props as {flash?: { title: string; message: string; icon: 'success' | 'error' };};
-   
+
     useEffect(() => {
           if (flash?.icon === 'success') {
               Swal.fire({
@@ -32,10 +32,18 @@ export default function Inventario() {
       }, [flash]);
 
     return (
-        <SistemaLayout>
-            <div className="flex w-[95%] justify-center p-10">
-                <Tabla productos={productos} imagenes={imagenes} />
-            </div>
-        </SistemaLayout>
+        <>
+            <Head>
+                <title>Inventario</title>
+                <meta name="Inventario" content="Inventario de productos" />
+            </Head>
+
+            <SistemaLayout>
+                <div className="flex w-[95%] justify-center p-10 flex-col gap-1">
+                    <Tabla productos={productos} imagenes={imagenes} />
+                    <Link href='#' className='border p-5 w-[15%] h-[5vh] flex items-center justify-center rounded-[8px] bg-[#0B0B0B] text-[15px] text-white transition duration-300 ease-in-out hover:-translate-y-1 hover:bg-[#282727] cursor-pointer '>Agregar un Producto</Link>
+                </div>
+            </SistemaLayout>
+        </>
     );
 }

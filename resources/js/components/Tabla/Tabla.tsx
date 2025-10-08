@@ -136,7 +136,7 @@ export default function Tabla({productos,imagenes,}: {productos?: Producto[];ima
 
     // Filtro para la busqueda
     const datosFiltrados = data.filter((item) =>
-        item.producto.toLowerCase().includes(buscar.toLowerCase()),
+        item.producto?.toLowerCase().includes(buscar.toLowerCase()),
     );
 
     return (

@@ -74,6 +74,18 @@ class InventarioController extends Controller
             'precio' => 'required|numeric',
             'cantidad' => 'required|integer',
             'imagen' => 'nullable|image|max:2048',
+        ],[
+            'producto.required' => 'El nombre del producto es obligatorio.',
+            'producto.string' => 'El nombre del producto debe ser una cadena de texto.',
+            'producto.max' => 'El nombre del producto no debe exceder los 100 caracteres.',
+            'descripcion.string' => 'La descripción debe ser una cadena de texto.',
+            'descripcion.max' => 'La descripción no debe exceder los 255 caracteres.',
+            'precio.required' => 'El precio es obligatorio.',
+            'precio.numeric' => 'El precio debe ser un número.',
+            'cantidad.required' => 'La cantidad es obligatoria.',
+            'cantidad.integer' => 'La cantidad debe ser un número entero.',
+            'imagen.image' => 'El archivo debe ser una imagen válida.',
+            'imagen.max' => 'El tamaño de la imagen no debe exceder los 2MB.',
         ]);
 
         try {
@@ -174,6 +186,18 @@ class InventarioController extends Controller
             'precio' => 'required|numeric',
             'cantidad' => 'required|integer',
             'imagen' => 'nullable|image|max:2048',      
+        ],[
+            'producto.required' => 'El nombre del producto es obligatorio.',
+            'producto.string' => 'El nombre del producto debe ser una cadena de texto.',
+            'producto.max' => 'El nombre del producto no debe exceder los 100 caracteres.',
+            'descripcion.string' => 'La descripción debe ser una cadena de texto.',
+            'descripcion.max' => 'La descripción no debe exceder los 255 caracteres.',
+            'precio.required' => 'El precio es obligatorio.',
+            'precio.numeric' => 'El precio debe ser un número.',
+            'cantidad.required' => 'La cantidad es obligatoria.',
+            'cantidad.integer' => 'La cantidad debe ser un número entero.',
+            'imagen.image' => 'El archivo debe ser una imagen válida.',
+            'imagen.max' => 'El tamaño de la imagen no debe exceder los 2MB.',
         ]);
 
         try{

@@ -15,12 +15,12 @@ export default function FormularioProducto({
     const [imagenPreview, setImagenPreview] = useState<string | null>(null);
     console.log(productos);
     console.log(imagenes);
-    const { data, setData, post } = useForm<ProductoForm>({
+    const { data, setData, post, errors } = useForm<ProductoForm>({
         id: productos ? productos[0].id_producto : 0,
         producto: productos ? productos[0].producto : '',
         descripcion: productos ? productos[0].descripcion : '',
-        precio: String(productos ? productos[0].precio : ''),
-        cantidad: String(productos ? productos[0].cantidad : ''),
+        precio: Number(productos ? productos[0].precio : 0).toFixed(2),
+        cantidad: Number(productos ? productos[0].cantidad : 0).toFixed(0),
         imagen: null,
     });
     //Crea una url temporal para la imagen seleccionada para mostrar como preview
@@ -46,7 +46,7 @@ export default function FormularioProducto({
 
     return (
         <>
-            <div className="flex h-full w-full flex-col items-center gap-5">
+            <div className="flex h-full w-full flex-col items-center justify-center gap-5">
                 <div className="h-[30%] w-[20%] rounded-[5px] border-2 border-gray-300 p-2">
                     {imagenes && imagenes.length > 0 ? (
                         imagenes.map((img, index) => (
@@ -89,6 +89,11 @@ export default function FormularioProducto({
                                 }
                                 placeholder="Producto"
                             />
+                                {errors.producto && (
+                                    <span className="text-red-500">
+                                        {errors.producto}
+                                    </span>
+                                )}
                             <input
                                 className="w-[300px] rounded-[10px] border border-gray-300 p-2"
                                 type="text"
@@ -98,6 +103,11 @@ export default function FormularioProducto({
                                 }
                                 placeholder="Descripción"
                             />
+                            {errors.descripcion && (
+                                <span className="text-red-500">
+                                    {errors.descripcion}
+                                </span>
+                            )}
                             <input
                                 className="w-[300px] rounded-[10px] border border-gray-300 p-2"
                                 type="number"
@@ -107,6 +117,11 @@ export default function FormularioProducto({
                                 }
                                 placeholder="Precio"
                             />
+                            {errors.precio && (
+                                <span className="text-red-500">
+                                    {errors.precio}
+                                </span>
+                            )}
                         </div>
                         <div className="flex flex-col gap-3">
                             <input
@@ -118,6 +133,11 @@ export default function FormularioProducto({
                                 }
                                 placeholder="Cantidad"
                             />
+                            {errors.cantidad && (
+                                <span className="text-red-500">
+                                    {errors.cantidad}
+                                </span>
+                            )}
                             <input
                                 className="w-[300px] rounded-[10px] border border-gray-300 p-2"
                                 type="file"
@@ -128,6 +148,11 @@ export default function FormularioProducto({
                                     )
                                 }
                             />
+                            {errors.imagen && (
+                                <span className="text-red-500">
+                                    {errors.imagen}
+                                </span>
+                            )}
                         </div>
                     </div>
                     <button

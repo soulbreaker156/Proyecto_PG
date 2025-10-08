@@ -25,4 +25,5 @@ Route::middleware([AccesoPagina::class])->group(function () {
     Route::get('/inventario/editar', [InventarioController::class, 'editarDatos'])->name('inventario.editar');
     Route::post('/inventario/actualizar', [InventarioController::class, 'actualizar'])->name('inventario.actualizar');
     Route::post('/inventario/eliminar', [InventarioController::class, 'eliminar'])->name('inventario.eliminar');
+    Route::post('/inventario/actualizarEstado', [InventarioController::class, 'actualizarEstado'])->name('inventario.actualizarEstado');
 });

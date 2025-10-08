@@ -45,6 +45,21 @@ export default function Tabla({productos,imagenes,}: {productos?: Producto[];ima
                         }
                     });
         };
+         const botonEstado = (id: number) => {
+            Swal.fire({
+                title: "Estas seguro?",
+                text: "No se mostrara en el catalogo!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Si, cambiarlo!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Inertia.post('/inventario/actualizarEstado', { id: id });
+                        }
+                    });
+        };
 
     const columns = [
         {
@@ -106,14 +121,11 @@ export default function Tabla({productos,imagenes,}: {productos?: Producto[];ima
                     </button>
                     <button
                         className="transition delay-75 ease-in-out hover:scale-150 cursor-pointer"
-                        onClick={() => {
-                            // Lógica para ver detalles del producto
-                            console.log('Ver detalles del producto:', row);
-                        }}
+                        onClick={() => {botonEstado(row.id)}}
                     >
                         <img
                             className="w-60"
-                            src="/assets/icon/estado.png"
+                            src={`${row.estado === 'mostrado' ? '/assets/icon/verEstado.png' : '/assets/icon/ocultoEstado.png'}`}
                             alt="detalles"
                         />
                     </button>

@@ -138,4 +138,30 @@ class InventarioController extends Controller
             ]);
         }
     }
+    public function actualizarEstado(Request $request)
+    {
+        $id = $request->input('id');
+        $producto = Producto::find($id);
+        try {
+            DB::beginTransaction();
+            if ($producto) {
+                // Alterna el estado entre 'mostrado' y 'oculto'
+                $producto->estado = ($producto->estado === 'mostrado') ? 'oculto' : 'mostrado';
+                $producto->save();
+                DB::commit();
+                return redirect()->route('inventario.index')->with('flash', [
+                    'title' => 'Actualización de estado exitosa',
+                    'message' => 'El estado del producto se ha actualizado correctamente.',
+                    'icon' => 'success'
+                ]);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('inventario.index')->with('flash', [
+                'title' => 'Error',
+                'message' => 'Hubo un problema al actualizar el estado del producto.',
+                'icon' => 'error'
+            ]);
+        }
+    }
 }

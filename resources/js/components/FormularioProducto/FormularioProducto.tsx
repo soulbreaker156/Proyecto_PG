@@ -76,10 +76,11 @@ export default function FormularioProducto({
 
                 <form
                     onSubmit={handleSubmit}
-                    className="flex w-full flex-col items-center justify-center gap-3"
+                    className="flex w-full flex-col items-center justify-center gap-5"
                 >
-                    <div className="flex w-full justify-center gap-3">
+                    <div className="flex w-full justify-center gap-5">
                         <div className="flex flex-col gap-3">
+                            <label htmlFor="producto">Nombre del Producto</label>
                             <input
                                 className="w-[300px] rounded-[10px] border border-gray-300 p-2"
                                 type="text"
@@ -94,20 +95,7 @@ export default function FormularioProducto({
                                         {errors.producto}
                                     </span>
                                 )}
-                            <input
-                                className="w-[300px] rounded-[10px] border border-gray-300 p-2"
-                                type="text"
-                                value={data.descripcion}
-                                onChange={(e) =>
-                                    setData('descripcion', e.target.value)
-                                }
-                                placeholder="Descripción"
-                            />
-                            {errors.descripcion && (
-                                <span className="text-red-500">
-                                    {errors.descripcion}
-                                </span>
-                            )}
+                            <label htmlFor="precio">Precio del Producto</label>
                             <input
                                 className="w-[300px] rounded-[10px] border border-gray-300 p-2"
                                 type="number"
@@ -122,8 +110,25 @@ export default function FormularioProducto({
                                     {errors.precio}
                                 </span>
                             )}
+                            <label htmlFor="descripcion">Descripción del Producto</label>
+                            <textarea
+                                className="w-[300px] rounded-[10px] border border-gray-300 p-2"
+                                value={data.descripcion}
+                                onChange={(e) =>
+                                    setData('descripcion', e.target.value)
+                                }
+                                placeholder="Descripción"
+                                rows={4}
+                                maxLength={255}
+                            />
+                                {errors.descripcion && (
+                                    <span className="text-red-500">
+                                        {errors.descripcion}
+                                    </span>
+                                )}
                         </div>
                         <div className="flex flex-col gap-3">
+                            <label htmlFor="cantidad">Cantidad del Producto</label>
                             <input
                                 className="w-[300px] rounded-[10px] border border-gray-300 p-2"
                                 type="number"
@@ -138,6 +143,7 @@ export default function FormularioProducto({
                                     {errors.cantidad}
                                 </span>
                             )}
+                            <label htmlFor="imagen">Imagen del Producto</label>
                             <input
                                 className="w-[300px] rounded-[10px] border border-gray-300 p-2"
                                 type="file"
@@ -156,7 +162,7 @@ export default function FormularioProducto({
                         </div>
                     </div>
                     <button
-                        className="w-[20%] rounded-[10px] border border-gray-300 p-2"
+                        className="w-[20%] rounded-[8px] text-white bg-[#0B0B0B] p-2 transition duration-300 ease-in-out hover:-translate-y-1 hover:bg-[#282727] cursor-pointer"
                         type="submit"
                     >
                         Agregar Producto

@@ -142,7 +142,7 @@ export default function Tabla({productos,imagenes,}: {productos?: Producto[];ima
     return (
         <>
             <div>
-                <div className="w-[30vh] p-4">
+                <div className="w-[30vh] p-4 mt-20">
                     <input
                         type="text"
                         placeholder="Buscar producto..."

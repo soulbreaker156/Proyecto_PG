@@ -1,21 +1,34 @@
-import { useForm, usePage } from '@inertiajs/react';
+import { useForm } from '@inertiajs/react';
 import React, { useEffect, useState } from 'react';
-import Swal from "sweetalert2";
-import {ImagenProducto,Producto,ProductoForm,} from '../Interfaces/interfaceInventario';
-export default function FormularioProducto({productos,imagenes,}: {productos?: Producto[];imagenes?: ImagenProducto[];}) 
-{
+import {
+    ImagenProducto,
+    Producto,
+    ProductoForm,
+} from '../Interfaces/interfaceInventario';
+export default function FormularioProducto({
+    productos,
+    imagenes,
+}: {
+    productos?: Producto[];
+    imagenes?: ImagenProducto[];
+}) {
     const [imagenPreview, setImagenPreview] = useState<string | null>(null);
- 
+    console.log(productos);
+    console.log(imagenes);
     const { data, setData, post } = useForm<ProductoForm>({
         id: productos ? productos[0].id_producto : 0,
         producto: productos ? productos[0].producto : '',
         descripcion: productos ? productos[0].descripcion : '',
-        precio:String(productos ? productos[0].precio : ''),
-        cantidad:String(productos ? productos[0].cantidad : ''),
+        precio: String(productos ? productos[0].precio : ''),
+        cantidad: String(productos ? productos[0].cantidad : ''),
         imagen: null,
     });
     //Crea una url temporal para la imagen seleccionada para mostrar como preview
     useEffect(() => {
+        if (!data.imagen) {
+            setImagenPreview(null);
+            return;
+        }
         const img = data.imagen;
         const preview =
             img && typeof img !== 'string' ? URL.createObjectURL(img) : img;
@@ -24,26 +37,41 @@ export default function FormularioProducto({productos,imagenes,}: {productos?: P
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post('/inventario/actualizar');
+        if (!productos) {
+            post('/inventario/guardarProducto');
+        } else {
+            post('/inventario/actualizar');
+        }
     };
-    
 
     return (
         <>
             <div className="flex h-full w-full flex-col items-center gap-5">
                 <div className="h-[30%] w-[20%] rounded-[5px] border-2 border-gray-300 p-2">
-                    {imagenes?.map((img, index) => (
+                    {imagenes && imagenes.length > 0 ? (
+                        imagenes.map((img, index) => (
+                            <img
+                                key={index}
+                                className="h-full w-full object-cover"
+                                src={
+                                    imagenPreview ||
+                                    (typeof img.imagen === 'string'
+                                        ? img.imagen
+                                        : '/assets/productos/no-hay-imagen.jpg')
+                                }
+                                alt={`producto-${index}`}
+                            />
+                        ))
+                    ) : (
                         <img
-                            key={index}
                             className="h-full w-full object-cover"
                             src={
-                                imagenPreview !== null
-                                    ? imagenPreview
-                                    : img.imagen || undefined
+                                imagenPreview ||
+                                '/assets/productos/no-hay-imagen.jpg'
                             }
-                            alt={`producto-${index}`}
+                            alt="no-hay-imagen"
                         />
-                    ))}
+                    )}
                 </div>
 
                 <form

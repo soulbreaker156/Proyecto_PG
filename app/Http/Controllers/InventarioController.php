@@ -157,7 +157,57 @@ class InventarioController extends Controller
             DB::rollBack();
             return redirect()->route('inventario.index')->with('flash', [
                 'title' => 'Error',
-                'message' => 'Hubo un problema al actualizar el estado del producto.',
+                'message' => 'error:'. $e->getMessage(),
+                'icon' => 'error'
+            ]);
+        }
+    }
+    public function agregar()
+    {
+        return Inertia::render('AgregarProducto/AgregarProducto');
+    }
+    public function guardar(Request $request)
+    {
+        $datos = $request->validate([
+            'producto' => 'required|string|max:100',
+            'descripcion' => 'nullable|string|max:255',
+            'precio' => 'required|numeric',
+            'cantidad' => 'required|integer',
+            'imagen' => 'nullable|image|max:2048',      
+        ]);
+
+        try{
+            DB::beginTransaction();
+
+            $nuevaImagen = null;
+            if ($request->hasFile('imagen')){
+                $archivo = $request->file('imagen');
+                $nuevaImagen = base64_encode(file_get_contents($archivo->getRealPath()));
+            }
+            $imagen=ImagenProducto::create([
+                'imagen_producto' => $nuevaImagen,
+            ]);
+            Producto::create([
+                'producto' => $datos['producto'],
+                'descripcion' => $datos['descripcion'],
+                'precio' => (float)$datos['precio'],
+                'cantidad' => (int)$datos['cantidad'],
+                'estado' => 'mostrado',
+                'estatus' => 'activo',
+                'fk_id_imagen' => $imagen->id_imagen,
+            ]);
+            DB::commit();
+            return redirect()->route('inventario.index')->with('flash', [
+                'title' => 'Producto agregado',
+                'message' => 'El producto se ha agregado correctamente.',
+                'icon' => 'success'
+            ]);
+
+        }catch(\Exception $e){
+            DB::rollBack();
+            return redirect()->route('inventario.index')->with('flash', [
+                'title' => 'Error',
+                'message' => 'error:'. $e->getMessage(),
                 'icon' => 'error'
             ]);
         }

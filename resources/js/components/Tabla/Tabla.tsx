@@ -11,7 +11,6 @@ import Swal from 'sweetalert2';
 export default function Tabla({productos,imagenes,}: {productos?: Producto[];imagenes?: ImagenProducto[];}) {
     // Estado para la búsqueda
     const [buscar, setBuscar] = useState('');
-    console.log(productos);
     // Se transforman los datos para la tabla
     const data =
         productos?.map((producto) => ({

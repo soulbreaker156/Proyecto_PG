@@ -13,8 +13,7 @@ export default function FormularioProducto({
     imagenes?: ImagenProducto[];
 }) {
     const [imagenPreview, setImagenPreview] = useState<string | null>(null);
-    console.log(productos);
-    console.log(imagenes);
+    // useForm para manejar el formulario
     const { data, setData, post, errors } = useForm<ProductoForm>({
         id: productos ? productos[0].id_producto : 0,
         producto: productos ? productos[0].producto : '',

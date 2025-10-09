@@ -28,6 +28,7 @@ export default function CardProductos({producto,imagen,}: {producto: Producto;im
         <textarea
           disabled
           className="text-md w-full h-full overflow-y-auto"
+          value={producto.descripcion}
         >
           {producto.descripcion}
         </textarea>

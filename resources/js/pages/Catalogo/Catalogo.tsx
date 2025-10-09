@@ -4,8 +4,7 @@ import { Producto,ImagenProducto } from "@/components/Interfaces/interfaceCatalo
 import CardProductos from "@/components/CardProductos/CardProductos";
 export default function Catalogo() {
     const { productos, imagenes } = usePage<{ productos: Producto[]; imagenes: ImagenProducto[]; }>().props;
-console.log(productos);
-    console.log(imagenes);
+    
     return (
         <>
         <Head>

@@ -142,7 +142,7 @@ export default function Tabla({productos,imagenes,}: {productos?: Producto[];ima
     return (
         <>
             <div>
-                <div className="w-[30vh] p-4 mt-20">
+                <div className="w-[30vh] p-4 mt-0">
                     <input
                         type="text"
                         placeholder="Buscar producto..."
@@ -152,11 +152,12 @@ export default function Tabla({productos,imagenes,}: {productos?: Producto[];ima
                     />
                 </div>
 
-                <div className="w-full overflow-x-auto">
+                <div className="w-full max-h-[75vh] overflow-auto">
                     <DataTable
                         columns={columns}
                         data={datosFiltrados}
                         pagination
+                        paginationPerPage={10}
                         responsive
                         highlightOnHover
                     />

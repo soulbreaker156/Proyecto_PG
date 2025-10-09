@@ -24,7 +24,7 @@ export default function Tabla({productos,imagenes,}: {productos?: Producto[];ima
                 const img = imagenes?.find(
                     (img) => img.id_imagen === producto.fk_id_imagen,
                 );
-                return img ? <img src={img.imagen || ''} alt="imagen" /> : 'No image';
+                return img ? <img src={img.imagen || ''} alt="imagen" /> : <img src={'/assets/productos/no-hay-imagen.jpg'} alt="No hay imagen" />;
             })(),
             estado: producto.estado,
             estatus: producto.estatus,

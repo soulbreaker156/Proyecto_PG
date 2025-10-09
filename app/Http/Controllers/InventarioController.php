@@ -19,7 +19,7 @@ class InventarioController extends Controller
                 : $img->imagen_producto;
             return [
                 'id_imagen' => $img->id_imagen,
-                'imagen' => 'data:image/jpeg;base64,' . $binario,
+                'imagen' => $img->imagen_producto !== null ? 'data:image/jpeg;base64,' . $binario : '/assets/productos/no-hay-imagen.jpg',
             ];
         });
 
@@ -48,7 +48,7 @@ class InventarioController extends Controller
                 : $img->imagen_producto;
             return [
                 'id_imagen' => $img->id_imagen,
-                'imagen' => 'data:image/jpeg;base64,' . $binario,
+                'imagen' => $img->imagen_producto !== null ? 'data:image/jpeg;base64,' . $binario : '/assets/productos/no-hay-imagen.jpg',
             ];
         });
 

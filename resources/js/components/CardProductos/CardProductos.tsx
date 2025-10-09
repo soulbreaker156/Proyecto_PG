@@ -2,7 +2,7 @@ import { ImagenProducto, Producto } from '@/components/Interfaces/interfaceCatal
 
 export default function CardProductos({producto,imagen,}: {producto: Producto;imagen: ImagenProducto;}) {
   return (
-    <section className="relative z-0 flex h-[45vh] w-[90%] transform flex-col items-center gap-5 rounded-[8px] border border-gray-300 shadow-[0px_20px_10px_5px_rgba(0,0,0,0.1)]  p-2 transition duration-300 ease-in-out hover:scale-105">
+    <section className="relative z-0 flex h-[43vh] w-[90%] transform flex-col items-center gap-5 rounded-[8px] border border-gray-300 shadow-[0px_20px_10px_5px_rgba(0,0,0,0.1)]  p-2 transition duration-300 ease-in-out hover:scale-105">
       <header className="left-center absolute -top-4 z-10 rounded-[8px] border border-gray-300 bg-white px-2 py-1 text-sm font-semibold shadow-md">
         {producto.producto}
       </header>

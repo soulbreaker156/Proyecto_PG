@@ -40,7 +40,7 @@ export default function Inventario() {
             </Head>
 
             <SistemaLayout>
-                <div className="flex w-[95%] justify-center p-20 min-h-[80vh] flex-col overflow-auto gap-5">
+                <div className="flex w-[95%] justify-center p-8 min-h-[80vh] flex-col overflow-auto gap-5">
                     <Tabla productos={productos} imagenes={imagenes} />
                     <Link href='/inventario/agregar' className='p-5 w-[15%] h-[5vh] flex items-center justify-center rounded-[8px] bg-[#0B0B0B] text-[15px] text-white transition duration-300 ease-in-out hover:-translate-y-1 hover:bg-[#282727] cursor-pointer '>Agregar un Producto</Link>
                 </div>

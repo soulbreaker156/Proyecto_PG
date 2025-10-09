@@ -17,7 +17,6 @@ class CatalogoController extends Controller
             'producto',
             'descripcion',
             'precio',
-            'cantidad',
             'fk_id_imagen'
         ])
             ->where('estado', 'mostrado')

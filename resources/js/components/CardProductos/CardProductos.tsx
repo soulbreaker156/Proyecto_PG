@@ -1,13 +1,32 @@
-import { Producto, ImagenProducto } from '@/components/Interfaces/interfaceCatalogo';
-export default function CardProductos({ producto, imagen }: { producto: Producto; imagen: ImagenProducto; }) {
+import {ImagenProducto,Producto,} from '@/components/Interfaces/interfaceCatalogo';
+
+export default function CardProductos({producto,imagen,}: {producto: Producto;imagen: ImagenProducto;}) {
     return (
-        <div className='flex gap-5 flex-col items-center border h-[40vh] w-[90%] rounded-[8px] transition duration-300 ease-in-out transform hover:scale-105 p-2'>
-            <div>
+        <section className="relative z-0 flex h-[40vh] w-[90%] transform flex-col items-center gap-5 rounded-[8px] border p-2 transition duration-300 ease-in-out hover:scale-105">
+            <header className="left-center absolute -top-4 z-10 rounded-[8px] border border-gray-300 bg-white px-2 py-1 text-sm font-semibold shadow-md">
                 {producto.producto}
-            </div>
-            <div className='h-[50%] w-[60%] overflow-hidden p-2 border border-gray-300 rounded-[8px]'>
-                <img className='object-fill h-full w-full' src={typeof imagen.imagen === 'string' ? imagen.imagen : '/assets/productos/no-hay-imagen.jpg'} alt={imagen.id_imagen !== undefined ? imagen.id_imagen.toString() : 'Imagen'} />
-            </div>
-        </div>
+            </header>
+            <figure className="mt-3 h-[50%] w-[60%] overflow-hidden rounded-[8px] border border-gray-300 p-2 shadow-[0px_20px_10px_5px_rgba(0,0,0,0.1)]">
+                <img
+                    className="h-full w-full object-fill"
+                    src={
+                        typeof imagen.imagen === 'string'
+                            ? imagen.imagen
+                            : '/assets/productos/no-hay-imagen.jpg'
+                    }
+                    alt={
+                        imagen.id_imagen !== undefined
+                            ? imagen.id_imagen.toString()
+                            : 'Imagen'
+                    }
+                />
+                <figcaption className="absolute right-2 bottom-2 z-10 rounded-[8px] border border-gray-300 bg-white px-2 py-1 text-sm font-semibold shadow-md">
+                    {`Q.${producto.precio}`}
+                </figcaption>
+            </figure>
+            <main>
+                <p className="text-justify text-sm">{producto.descripcion}</p>
+            </main>
+        </section>
     );
 }

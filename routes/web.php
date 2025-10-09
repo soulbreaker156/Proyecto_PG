@@ -30,4 +30,7 @@ Route::middleware([AccesoPagina::class])->group(function () {
     Route::get('/inventario/agregar', [InventarioController::class, 'agregar'])->name('inventario.agregar');
     Route::post('/inventario/guardarProducto', [InventarioController::class, 'guardar'])->name('inventario.guardarProducto');
     Route::get('/catalogo', [CatalogoController::class, 'index'])->name('catalogo.index');
+    Route::get('/carrito', function () {
+        return Inertia::render('Carrito/Carrito');
+    })->name('carrito.index');
 });

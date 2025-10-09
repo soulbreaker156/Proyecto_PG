@@ -1,8 +1,6 @@
 import BarraDeNavegacion from '@/components/ui/BarraDeNavegacion';
 import CarritoComponente from '@/components/ui/CarritoComponente';
 import { usePage } from '@inertiajs/react';
-
-
 export default function SistemaLayout({children,}: {children: React.ReactNode;}) {
     const { url } = usePage();
 

@@ -9,7 +9,7 @@ export default function CarritoComponente({url,}: {url: string;}) {
             !ocultarPorPrefijo.some(prefijo => url.startsWith(prefijo));
     
     return (
-        <Link className={`absolute top-4 right-4 transition duration-300 ease-in-out hover:scale-110 ${mostrarCarrito ? 'block' : 'hidden'}`} href="#">
+        <Link className={`absolute top-4 right-4 transition duration-300 ease-in-out hover:scale-110 ${mostrarCarrito ? 'block' : 'hidden'}`} href="/carrito">
             <img src="/assets/icon/carrito.png" alt="Carrito" />
         </Link>
     );

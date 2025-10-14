@@ -1,7 +1,4 @@
-import {
-    ImagenProducto,
-    Producto,
-} from '@/components/Interfaces/interfaceInventario';
+import {ImagenProducto,Producto,} from '@/components/Interfaces/interfaceInventario';
 import { useState, useEffect } from 'react';
 import DataTable from 'react-data-table-component';
 import { Link } from '@inertiajs/react';
@@ -79,6 +76,12 @@ export default function Tabla({productos,imagenes,}: {productos?: Producto[];ima
         {
             name: 'Precio',
             selector: (row: any) => row.precio,
+            cell: (row: any) => {
+                const precio = typeof row.precio === 'string'
+                    ? parseFloat(row.precio.replace('Q. ', '').replace(',', ''))
+                    : row.precio;
+                return precio.toLocaleString('es-US', { style: 'currency', currency: 'GTQ' });
+            },
             sortable: true,
         },
         {

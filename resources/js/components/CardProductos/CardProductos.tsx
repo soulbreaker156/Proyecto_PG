@@ -1,6 +1,20 @@
 import { ImagenProducto, Producto } from '@/components/Interfaces/interfaceCatalogo';
+import { useState, useEffect } from 'react';
 
-export default function CardProductos({producto,imagen,}: {producto: Producto;imagen: ImagenProducto;}) {
+export default function CardProductos({ producto, imagen }: { producto: Producto; imagen: ImagenProducto; }) {
+  const [cantidad, setCantidad] = useState<number | undefined>();
+
+  /* Al montar, revisa si el producto ya está en el carrito
+   useEffect(() => {
+    const carrito = JSON.parse(localStorage.getItem('carrito') || '[]');
+    const item = carrito.find((item: any) => item.producto.id_producto === producto.id_producto);
+    if (item) {
+      setCantidad(item.cantidad);
+    } else {
+      setCantidad(undefined);
+    }
+  }, [producto.id_producto]);*/
+
   return (
     <section className="relative z-0 flex h-[43vh] w-[90%] transform flex-col items-center gap-5 rounded-[8px] border border-gray-300 shadow-[0px_20px_10px_5px_rgba(0,0,0,0.1)]  p-2 transition duration-300 ease-in-out hover:scale-105">
       <header className="left-center absolute -top-4 z-10 rounded-[8px] border border-gray-300 bg-white px-2 py-1 text-sm font-semibold shadow-md">
@@ -33,17 +47,43 @@ export default function CardProductos({producto,imagen,}: {producto: Producto;im
           {producto.descripcion}
         </textarea>
       </main>
+
+      <div className="flex items-center gap-2">
+        <label htmlFor={`cantidad-${producto.id_producto}`}>Cantidad:</label>
+        <input
+          id={`cantidad-${producto.id_producto}`}
+          type="number"
+          min={1}
+          value={cantidad}
+          onChange={e => {
+            const value = e.target.value;
+            if (value === '') {
+              setCantidad(undefined);
+            } else {
+              setCantidad(Math.max(0, Number(value)));
+            }
+          }}
+          className="w-16 border rounded px-2 py-1"
+        />
+      </div>
       <button
         className="mt-2 mr-4 rounded-[8px] bg-[#0B0B0B] px-4 py-2 text-white transition duration-300 ease-in-out hover:-translate-y-1 hover:bg-[#282727]"
         onClick={() => {
-          // Obtiene el carrito actual o crea uno nuevo
-          const carrito = JSON.parse(
-            localStorage.getItem('carrito') || '[]'
+          const carrito = JSON.parse(localStorage.getItem('carrito') || '[]');
+          let index = carrito.findIndex(
+            (item: any) => item.producto.id_producto === producto.id_producto
           );
-          // Agrega el producto actual
-          carrito.push({ producto, imagen });
-          // Guarda el carrito actualizado
+
+          let nuevaCantidad = cantidad !== undefined ? cantidad : 1;
+
+          if (index !== -1) {
+            carrito[index].cantidad += nuevaCantidad;
+          } else {
+            carrito.push({ producto, imagen, cantidad: nuevaCantidad });
+          }
+
           localStorage.setItem('carrito', JSON.stringify(carrito));
+          setCantidad(nuevaCantidad); // Refleja el cambio en el input
         }}
       >
         Agregar al carrito

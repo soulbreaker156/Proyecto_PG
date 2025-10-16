@@ -5,6 +5,7 @@ import {  useEffect, useState } from "react";
 import '../../../css/datatable.css';
 import DataTable from 'react-data-table-component';
 import { Inertia } from "@inertiajs/inertia";
+import Swal from "sweetalert2";
 export default function Carrito() {
     const [productos, setProductos] = useState<Producto[]>([]);
     const [imagenes, setImagenes] = useState<ImagenProducto[]>([]);
@@ -43,11 +44,31 @@ export default function Carrito() {
 
     // Función para enviar los datos al backend
     const datosEnviar = (datosPedido:any) => {
-        Inertia.post('/pedido/guardarPedido', { productos: datosPedido });
-        cancelarCompra();
-        alert('Pedido enviado correctamente');
+        if (datosPedido.length === 0) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'No hay productos en el carrito',
+                timer: 1500,
+                showConfirmButton: false,
+            }).then(() => {
+                Inertia.visit('/catalogo');
+            });
+            return;
+        }
+        Inertia.post('/pedido/crearPedido', { productos: datosPedido });
+        Swal.fire({
+            icon: 'success',
+            title: 'Éxito',
+            text: 'Pedido enviado correctamente',
+            timer: 1500,
+            showConfirmButton: false,
+        }).then(() => {
+            cancelarCompra();
+            Inertia.visit('/catalogo');
+        });
     }
-    // Manda los datos al backend
+    // Preparar los datos del pedido
     const datosPedido = productos.map((producto) => ({
         id_producto: producto.id_producto,
         cantidad: producto.cantidad,

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('fk_id_pedido');
             $table->unsignedBigInteger('fk_id_producto');
             $table->integer('cantidad');
+            $table->decimal('total', 10, 2);
             $table->timestamps();
             $table->foreign('fk_id_pedido')->references('id_pedido')->on('pedidos')->onDelete('cascade');
             $table->foreign('fk_id_producto')->references('id_producto')->on('productos')->onDelete('cascade');

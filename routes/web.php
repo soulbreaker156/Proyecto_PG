@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Middleware\AccesoPagina;
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\CatalogoController;
+use App\Http\Controllers\PedidoController;
 Route::get('/', function () {
     return Inertia::render('Login/Login');
 })->name('home');
@@ -30,7 +31,6 @@ Route::middleware([AccesoPagina::class])->group(function () {
     Route::get('/inventario/agregar', [InventarioController::class, 'agregar'])->name('inventario.agregar');
     Route::post('/inventario/guardarProducto', [InventarioController::class, 'guardar'])->name('inventario.guardarProducto');
     Route::get('/catalogo', [CatalogoController::class, 'index'])->name('catalogo.index');
-    Route::get('/carrito', function () {
-        return Inertia::render('Carrito/Carrito');
-    })->name('carrito.index');
+    Route::get('/carrito', function () {return Inertia::render('Carrito/Carrito');})->name('carrito.index');
+    Route::post('/pedido/crearPedido', [PedidoController::class, 'crearPedido'])->name('pedido.crearPedido');
 });

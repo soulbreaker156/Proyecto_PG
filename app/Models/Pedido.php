@@ -8,7 +8,7 @@ class Pedido extends Model
 {
     protected $table = 'pedidos';
     protected $primaryKey = 'id_pedido';
-    protected $fillable = ['fk_id_usuario'];
+    protected $fillable = ['fk_id_usuario','estado'];
 
     // Un pedido pertenece a un usuario
     public function usuario()
@@ -26,7 +26,7 @@ class Pedido extends Model
     public function productos()
     {
         return $this->belongsToMany(Producto::class, 'pedidos_productos', 'fk_id_pedido', 'fk_id_producto')
-                    ->withPivot('cantidad', 'fecha_creado');
+                    ->withPivot('cantidad','total', 'fecha_creado');
     }
 }
 

@@ -1,5 +1,5 @@
 import SistemaLayout from "@/layouts/SistemaLayout/SistemaLayout";
-import { Head, useForm } from "@inertiajs/react";
+import { Head, usePage } from "@inertiajs/react";
 import { Producto,ImagenProducto } from "@/components/Interfaces/interfaceCatalogo";
 import {  useEffect, useState } from "react";
 import '../../../css/datatable.css';
@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 export default function Carrito() {
     const [productos, setProductos] = useState<Producto[]>([]);
     const [imagenes, setImagenes] = useState<ImagenProducto[]>([]);
+    const { flash } = usePage<{ flash: { icon: 'success' | 'error'; title: string; message: string } }>().props;
  
     // Al montar, carga los productos del carrito desde localStorage
     useEffect(() => {
@@ -16,6 +17,23 @@ export default function Carrito() {
         setProductos(productosGuardados.map((item:any) => {return { ...item.producto, cantidad: item.cantidad }}));
         setImagenes(productosGuardados.map((item:any) => item.imagen));
     }, []);
+
+    // Mostrar notificaciones de flash messages
+    useEffect(() => {
+        if (flash?.message) {
+            Swal.fire({
+                icon: flash.icon,
+                title: flash.title,
+                text: flash.message,
+                timer: 1500,
+                showConfirmButton: false,
+            }).then(() => {
+                cancelarCompra();
+                Inertia.visit('/catalogo');
+            });
+        }
+    }, [flash]);
+
     // Función para eliminar un producto del carrito
     const eliminarProducto = (id_produ: number) => {
        const carrito = JSON.parse(localStorage.getItem('carrito') || '[]');
@@ -57,16 +75,6 @@ export default function Carrito() {
             return;
         }
         Inertia.post('/pedido/crearPedido', { productos: datosPedido });
-        Swal.fire({
-            icon: 'success',
-            title: 'Éxito',
-            text: 'Pedido enviado correctamente',
-            timer: 1500,
-            showConfirmButton: false,
-        }).then(() => {
-            cancelarCompra();
-            Inertia.visit('/catalogo');
-        });
     }
     // Preparar los datos del pedido
     const datosPedido = productos.map((producto) => ({

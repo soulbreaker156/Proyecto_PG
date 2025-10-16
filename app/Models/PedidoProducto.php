@@ -8,8 +8,8 @@ class PedidoProducto extends Pivot
 {
     protected $table = 'pedidos_productos';
     protected $primaryKey = 'id_pedido_producto';
-    protected $fillable = ['fk_id_pedido', 'fk_id_producto', 'cantidad'];
-
+    protected $fillable = ['fk_id_pedido', 'fk_id_producto', 'cantidad','total'];
+    public $timestamps = true;
     // Relación hacia pedido
     public function pedido()
     {

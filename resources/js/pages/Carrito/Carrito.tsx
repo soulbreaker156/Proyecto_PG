@@ -15,12 +15,18 @@ export default function Carrito() {
         setProductos(productosGuardados.map((item:any) => {return { ...item.producto, cantidad: item.cantidad }}));
         setImagenes(productosGuardados.map((item:any) => item.imagen));
     }, []);
- // Función para eliminar un producto del carrito
+    // Función para eliminar un producto del carrito
     const eliminarProducto = (id_produ: number) => {
        const carrito = JSON.parse(localStorage.getItem('carrito') || '[]');
        const nuevoCarrito = carrito.filter((item: any) => item.producto.id_producto !== productos[id_produ].id_producto);
        localStorage.setItem('carrito', JSON.stringify(nuevoCarrito));
        window.location.reload();
+    }
+    // Cancelar la compra
+    const cancelarCompra = () => {
+        localStorage.removeItem('carrito');
+        setProductos([]);
+        setImagenes([]);
     }
 
     // Se transforman los datos para la tabla
@@ -80,11 +86,12 @@ export default function Carrito() {
 
     return (
         <SistemaLayout>
-            <Head>
-                <title>Carrito</title>
-                <meta name="description" content="Página del carrito de compras" />
-            </Head>
-            <div className="w-full max-h-[75vh] overflow-auto">
+                <Head>
+                    <title>Carrito</title>
+                    <meta name="description" content="Página del carrito de compras" />
+                </Head>
+                <div className=" flex w-[95%] justify-center p-6 min-h-[100%] flex-col gap-5">
+                <div className="w-full max-h-[75vh] overflow-auto">
                     <DataTable
                         columns={columns}
                         data={data}
@@ -94,6 +101,12 @@ export default function Carrito() {
                         highlightOnHover
                     />
                 </div>
+                <div className="flex justify-between items-center mt-4">
+                    <p className="bg-black text-white text-2xl p-3 rounded-2xl">Total: {data.reduce((acc: number, item: any) => acc + (item.cantidad * parseFloat(item.precio.replace('Q. ', '').replace(',', ''))), 0).toLocaleString('es-US', { style: 'currency', currency: 'GTQ' })}</p>     
+                    <button onClick={cancelarCompra} className="bg-red-500 cursor-pointer text-white px-4 py-2 rounded hover:bg-red-600 h-[40px] min-w-[30%] transition ease-in-out hover:scale-105">Cancelar Compra</button>
+                    <button className="bg-green-500 cursor-pointer text-white px-4 py-2 rounded hover:bg-green-600 h-[40px] min-w-[30%] transition ease-in-out hover:scale-105">Enviar Pedido</button>
+                </div>
+            </div>
         </SistemaLayout>
     );
 }

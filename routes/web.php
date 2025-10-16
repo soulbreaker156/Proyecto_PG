@@ -8,6 +8,7 @@ use App\Http\Middleware\AccesoPagina;
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\CatalogoController;
 use App\Http\Controllers\PedidoController;
+use App\Http\Controllers\CreditoController;
 Route::get('/', function () {
     return Inertia::render('Login/Login');
 })->name('home');
@@ -33,4 +34,5 @@ Route::middleware([AccesoPagina::class])->group(function () {
     Route::get('/catalogo', [CatalogoController::class, 'index'])->name('catalogo.index');
     Route::get('/carrito', function () {return Inertia::render('Carrito/Carrito');})->name('carrito.index');
     Route::post('/pedido/crearPedido', [PedidoController::class, 'crearPedido'])->name('pedido.crearPedido');
+    Route::get('/creditos', [CreditoController::class, 'index'])->name('creditos.index');
 });

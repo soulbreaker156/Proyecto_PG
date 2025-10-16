@@ -75,7 +75,7 @@ export default function BarraDeNavegacion() {
                                 </a>
                             </li>
                             <li className="mb-6 transition delay-75 ease-in-out hover:translate-x-6 hover:scale-110 hover:text-gray-300">
-                                <a href="#" className="flex items-center gap-2">
+                                <a href="/creditos" className="flex items-center gap-2">
                                     <img
                                         src="/assets/icon/credito.png"
                                         alt="Creditos"

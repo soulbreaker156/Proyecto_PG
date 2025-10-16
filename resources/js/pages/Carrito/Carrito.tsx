@@ -1,14 +1,14 @@
 import SistemaLayout from "@/layouts/SistemaLayout/SistemaLayout";
-import { Head } from "@inertiajs/react";
+import { Head, useForm } from "@inertiajs/react";
 import { Producto,ImagenProducto } from "@/components/Interfaces/interfaceCatalogo";
 import {  useEffect, useState } from "react";
 import '../../../css/datatable.css';
 import DataTable from 'react-data-table-component';
+import { Inertia } from "@inertiajs/inertia";
 export default function Carrito() {
     const [productos, setProductos] = useState<Producto[]>([]);
     const [imagenes, setImagenes] = useState<ImagenProducto[]>([]);
-    console.log(productos);
-    console.log(imagenes);
+ 
     // Al montar, carga los productos del carrito desde localStorage
     useEffect(() => {
         const productosGuardados = JSON.parse(localStorage.getItem("carrito") || "[]");
@@ -30,7 +30,7 @@ export default function Carrito() {
     }
 
     // Se transforman los datos para la tabla
-    const data = productos.map((producto, index) => ({
+    const dataCarrito = productos.map((producto, index) => ({
         id: index,
         producto: producto.producto,
         descripcion: producto.descripcion,
@@ -38,7 +38,22 @@ export default function Carrito() {
         cantidad: producto.cantidad,
         imagen: imagenes.find(img => img.id_imagen === producto.fk_id_imagen)?.imagen || '/assets/productos/no-hay-imagen.jpg',
     }));
- 
+     //Total
+    const total = dataCarrito.reduce((acc: number, item: any) => acc + (item.cantidad * parseFloat(item.precio.replace('Q. ', '').replace(',', ''))), 0);
+
+    // Función para enviar los datos al backend
+    const datosEnviar = (datosPedido:any) => {
+        Inertia.post('/pedido/guardarPedido', { productos: datosPedido });
+        cancelarCompra();
+        alert('Pedido enviado correctamente');
+    }
+    // Manda los datos al backend
+    const datosPedido = productos.map((producto) => ({
+        id_producto: producto.id_producto,
+        cantidad: producto.cantidad,
+        total: Number(producto.cantidad * parseFloat(String(producto.precio).replace('Q. ', '').replace(',', ''))),
+    }));
+   
     const columns = [
         {
             name: 'Imagen',
@@ -94,7 +109,7 @@ export default function Carrito() {
                 <div className="w-full max-h-[75vh] overflow-auto">
                     <DataTable
                         columns={columns}
-                        data={data}
+                        data={dataCarrito}
                         pagination
                         paginationPerPage={10}
                         responsive
@@ -102,9 +117,9 @@ export default function Carrito() {
                     />
                 </div>
                 <div className="flex justify-between items-center mt-4">
-                    <p className="bg-black text-white text-2xl p-3 rounded-2xl">Total: {data.reduce((acc: number, item: any) => acc + (item.cantidad * parseFloat(item.precio.replace('Q. ', '').replace(',', ''))), 0).toLocaleString('es-US', { style: 'currency', currency: 'GTQ' })}</p>     
+                    <p className="bg-black text-white text-2xl p-3 rounded-2xl">Total: {total.toLocaleString('es-US', { style: 'currency', currency: 'GTQ' })}</p>
                     <button onClick={cancelarCompra} className="bg-red-500 cursor-pointer text-white px-4 py-2 rounded hover:bg-red-600 h-[40px] min-w-[30%] transition ease-in-out hover:scale-105">Cancelar Compra</button>
-                    <button className="bg-green-500 cursor-pointer text-white px-4 py-2 rounded hover:bg-green-600 h-[40px] min-w-[30%] transition ease-in-out hover:scale-105">Enviar Pedido</button>
+                    <button onClick={() => datosEnviar(datosPedido)} className="bg-green-500 cursor-pointer text-white px-4 py-2 rounded hover:bg-green-600 h-[40px] min-w-[30%] transition ease-in-out hover:scale-105">Enviar Pedido</button>
                 </div>
             </div>
         </SistemaLayout>

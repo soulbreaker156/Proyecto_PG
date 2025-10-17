@@ -1,9 +1,12 @@
 import SistemaLayout from "@/layouts/SistemaLayout/SistemaLayout";
-export default function DetallesCreditos() {
+import TablaDetallesCreditos from "@/components/TablaDetallesCreditos/TablaDetallesCreditos";
+export default function DetallesCreditos({usuario}: {usuario?: any}) {
     return (
         <>
             <SistemaLayout>
-                <h1>Detalles de Créditos</h1>
+                <main className="flex flex-col w-full h-[90vh] mt-10 gap-3">
+                    <TablaDetallesCreditos usuario={usuario} />
+                </main>
             </SistemaLayout>
         </>
     );

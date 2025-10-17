@@ -35,5 +35,5 @@ Route::middleware([AccesoPagina::class])->group(function () {
     Route::get('/carrito', function () {return Inertia::render('Carrito/Carrito');})->name('carrito.index');
     Route::post('/pedido/crearPedido', [PedidoController::class, 'crearPedido'])->name('pedido.crearPedido');
     Route::get('/creditos', [CreditoController::class, 'index'])->name('creditos.index');
-    Route::post('/creditos/detalles', [CreditoController::class, 'detalles'])->name('creditos.detalles');
+    Route::get('/creditos/detalles', [CreditoController::class, 'detalles'])->name('creditos.detalles');
 });

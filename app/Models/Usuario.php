@@ -20,7 +20,7 @@ class Usuario extends Authenticatable
         'fk_id_rol',
     ];
     protected $hidden = [
-        'contrasena',
+        'password',
     ];
 
     // Relación con el modelo Rol

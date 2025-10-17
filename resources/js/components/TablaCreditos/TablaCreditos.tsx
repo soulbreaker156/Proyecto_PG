@@ -12,7 +12,7 @@ export default function TablaCreditos({ usuarios }: { usuarios?: any }) {
             .filter((c: any) => c.tipo_mov === 'abono')
             .reduce((total: number, c: any) => total + parseFloat(c.monto), 0)
             .toLocaleString('en-US', {style: 'currency', currency: 'GTQ'}),
-        acciones: (<button onClick={() => router.post('/creditos/detalles', { usuarioId: credito.id_usuario })} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer">
+        acciones: (<button onClick={() => router.get('/creditos/detalles', { usuarioId: credito.id_usuario })} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer">
                 Ver Detalles
             </button>)
     }));

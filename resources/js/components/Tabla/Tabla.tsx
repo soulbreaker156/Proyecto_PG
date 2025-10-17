@@ -1,8 +1,7 @@
 import {ImagenProducto,Producto,} from '@/components/Interfaces/interfaceInventario';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import DataTable from 'react-data-table-component';
-import { Link } from '@inertiajs/react';
-import { Inertia } from '@inertiajs/inertia';
+import { router } from '@inertiajs/react';
 import Swal from 'sweetalert2';
 
 export default function Tabla({productos,imagenes,}: {productos?: Producto[];imagenes?: ImagenProducto[];}) {
@@ -37,7 +36,7 @@ export default function Tabla({productos,imagenes,}: {productos?: Producto[];ima
                 confirmButtonText: "Si, eliminarlo!"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        Inertia.post('/inventario/eliminar', { id: id });
+                        router.post('/inventario/eliminar', { id: id });
                         }
                     });
         };
@@ -52,7 +51,7 @@ export default function Tabla({productos,imagenes,}: {productos?: Producto[];ima
                 confirmButtonText: "Si, cambiarlo!"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        Inertia.post('/inventario/actualizarEstado', { id: id });
+                        router.post('/inventario/actualizarEstado', { id: id });
                         }
                     });
         };
@@ -100,7 +99,7 @@ export default function Tabla({productos,imagenes,}: {productos?: Producto[];ima
                 <div className="flex gap-5">
                     <button
                         className="transition delay-75 ease-in-out hover:scale-150 h-full cursor-pointer"
-                        onClick={() => Inertia.visit('/inventario/editar', {data: { id: row.id }})}/*Se hace la visita a la pagina (la ruta es get) y 
+                        onClick={() => router.visit('/inventario/editar', {data: { id: row.id }})}/*Se hace la visita a la pagina (la ruta es get) y 
                         con inertia permite mandar informacion sin ser un post, 
                         en este caso se manda el id del producto para asi solo enviar la informacion del producto a editar.
                         */

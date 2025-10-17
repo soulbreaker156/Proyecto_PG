@@ -1,4 +1,4 @@
-import creditos from "@/routes/creditos";
+import { router } from "@inertiajs/react";
 import DataTable from "react-data-table-component";
 export default function TablaCreditos({ usuarios }: { usuarios?: any }) {
    const data = usuarios.map((credito: any) => ({
@@ -12,9 +12,9 @@ export default function TablaCreditos({ usuarios }: { usuarios?: any }) {
             .filter((c: any) => c.tipo_mov === 'abono')
             .reduce((total: number, c: any) => total + parseFloat(c.monto), 0)
             .toLocaleString('en-US', {style: 'currency', currency: 'GTQ'}),
-        acciones: (<button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            Ver Detalles
-        </button>)
+        acciones: (<button onClick={() => router.post('/creditos/detalles', { usuarioId: credito.id_usuario })} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer">
+                Ver Detalles
+            </button>)
     }));
 
     const columns = [

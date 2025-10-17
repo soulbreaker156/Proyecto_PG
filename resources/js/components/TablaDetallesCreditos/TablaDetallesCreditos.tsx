@@ -1,17 +1,33 @@
 import DataTable from "react-data-table-component";
 import '../../../css/datatable.css';
 
-
-export default function TablaDetallesCreditos({ usuario }: { usuario: any }) {
-    const data = (usuario?.creditos || []).map((credito: any) => ({
-        nombre: usuario.usuario,
-        monto: credito.monto,
-        movimiento: credito.tipo_mov,
-        descripcion: credito.descripcion,
-        fecha: credito.fecha_mov,
-        
-    }));
+export default function TablaDetallesCreditos({ usuario, cliente }: { usuario?: any, cliente?: any }) {
     
+    // Determinar si es usuario o cliente y obtener los datos correspondientes
+    const esUsuario = usuario && !cliente;
+    const esCliente = cliente && !usuario;
+    
+    let data = [];
+    
+    if (esUsuario) {
+        // Datos para usuario
+        data = (usuario?.creditos || []).map((credito: any) => ({
+            nombre: usuario.usuario,
+            monto: credito.monto?.toLocaleString('en-US', {style: 'currency', currency: 'GTQ'}),
+            movimiento: credito.tipo_mov,
+            descripcion: credito.descripcion,
+            fecha: credito.fecha_mov,
+        }));
+    } else if (esCliente) {
+        // Datos para cliente
+        data = (cliente?.creditos || []).map((credito: any) => ({
+            nombre: cliente.nombre,
+            monto: credito.monto?.toLocaleString('en-US', {style: 'currency', currency: 'GTQ'}),
+            movimiento: credito.tipo_mov,
+            descripcion: credito.descripcion,
+            fecha: credito.fecha_mov,
+        }));
+    }
 
     const columns = [
         { name: "Nombre", selector: (row: any) => row.nombre, sortable: true },
@@ -23,6 +39,11 @@ export default function TablaDetallesCreditos({ usuario }: { usuario: any }) {
 
     return (
         <div className="w-full h-full overflow-auto p-5">
+            <h2 className="text-xl font-bold mb-4">
+                {esUsuario && `Movimientos de: ${usuario.usuario}`}
+                {esCliente && `Movimientos de: ${cliente.nombre}`}
+            </h2>
+            
             <DataTable
                 columns={columns}
                 data={data}

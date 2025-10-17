@@ -17,13 +17,7 @@ class Credito extends Model
         'fecha_mov',
         'fk_id_usuario',
     ];
-    protected $hidden = [
-        'tipo_mov',
-        'monto',
-        'descripcion',
-        'fecha_mov',
-        'fk_id_usuario',
-    ];
+
 
     // Relación con el modelo Usuario
     public function usuario()

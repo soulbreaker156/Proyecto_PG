@@ -15,6 +15,10 @@ class Cliente extends Model
         'apellido',
         'dpi',
     ];
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
 
     // Relación con el modelo Credito
     public function creditos()

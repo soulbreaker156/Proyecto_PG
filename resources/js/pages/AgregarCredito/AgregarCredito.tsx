@@ -1,12 +1,18 @@
 import SistemaLayout from "@/layouts/SistemaLayout/SistemaLayout";
-export default function AgregarCredito() {
+import { useState } from "react";
+import Swal from "sweetalert2";
+import { usePage } from "@inertiajs/react";
+import FormularioCreditos from "@/components/FormularioCreditos/FormularioCreditos";
+import { Usuario } from "@/components/Interfaces/interfaceUsuario";
+import { Cliente } from "@/components/Interfaces/interfaceCliente";
+export default function AgregarCredito({ usuarios, clientes }: { usuarios?: Usuario[], clientes?: Cliente[] }) {
+    console.log(usuarios);
+    console.log(clientes);
     return (
         <SistemaLayout>
-            <div className="p-4">
-                <h1 className="text-2xl font-bold mb-4">Agregar Crédito</h1>
-                {/* Aquí puedes agregar el formulario o los componentes necesarios para agregar un crédito */}
-                <p>Formulario para agregar crédito próximamente...</p>
-            </div>
+            <main className="flex flex-col justify-center">
+                <FormularioCreditos usuarios={usuarios} clientes={clientes} />
+            </main>
         </SistemaLayout>
     );
 }

@@ -21,6 +21,8 @@ class Usuario extends Authenticatable
     ];
     protected $hidden = [
         'password',
+        'created_at',
+        'updated_at',
     ];
 
     // Relación con el modelo Rol

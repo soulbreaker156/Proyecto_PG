@@ -18,7 +18,10 @@ class Credito extends Model
         'fk_id_usuario',
         'fk_id_cliente',
     ];
-
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
 
     // Relación con el modelo Usuario
     public function usuario()

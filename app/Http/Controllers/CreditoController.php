@@ -1,11 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Credito;
 use Inertia\Inertia;
 use App\Models\Cliente;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CreditoController extends Controller
 {
@@ -41,8 +42,57 @@ class CreditoController extends Controller
             return redirect()->back()->withErrors(['error' => 'Error al obtener los detalles']);
         }
     }
-    function agregarCredito(Request $request)
+    function agregarCredito()
     {
-        return Inertia::render('AgregarCredito/AgregarCredito');
+        $usuarios = Usuario::all();
+        $clientes = Cliente::all();
+        return Inertia::render('AgregarCredito/AgregarCredito', [
+            'usuarios' => $usuarios,
+            'clientes' => $clientes,
+        ]);
+    }
+    function guardarCredito(Request $request)
+    {
+       $data = $request->validate([
+            'usuario_id' => 'nullable|exists:usuarios,id_usuario',
+            'cliente_id' => 'nullable|exists:clientes,id_cliente',
+            'monto' => 'required|numeric|min:0.01',
+            'descripcion' => 'required|string|max:100',
+        ],[
+            'usuario_id.exists' => 'El usuario seleccionado no es válido.',
+            'cliente_id.exists' => 'El cliente seleccionado no es válido.',
+            'monto.required' => 'El monto es obligatorio.',
+            'monto.numeric' => 'El monto debe ser un número válido.',
+            'monto.min' => 'El monto debe ser al menos 0.01.',
+            'descripcion.required' => 'La descripción es obligatoria.',
+            'descripcion.string' => 'La descripción debe ser una cadena de texto.',
+            'descripcion.max' => 'La descripción no debe exceder los 100 caracteres.',
+        ]);
+        
+       try {
+           DB::beginTransaction();
+        if(!$data['usuario_id']){
+            $credito = new Credito();
+            $credito->tipo_mov ='credito';
+            $credito->monto = $data['monto'];
+            $credito->descripcion = $data['descripcion'];
+            $credito->fecha_mov = now();
+            $credito->fk_id_cliente = $data['cliente_id'];
+            $credito->save();
+        } else {
+            $credito = new Credito();
+            $credito->tipo_mov ='credito';
+            $credito->monto = $data['monto'];
+            $credito->descripcion = $data['descripcion'];
+            $credito->fecha_mov = now();
+            $credito->fk_id_usuario = $data['usuario_id'];
+            $credito->save();
+        }
+        DB::commit();
+            return redirect()->route('creditos.index')->with('success', 'Crédito agregado exitosamente.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->withErrors(['error' => 'Error al guardar el crédito.'])->withInput();
+        }
     }
 }

@@ -90,10 +90,18 @@ class CreditoController extends Controller
                 $credito->save();
             }
             DB::commit();
-            return redirect()->route('creditos.index')->with('success', 'Crédito agregado exitosamente.');
+            return redirect()->back()->with(['flash' => [
+                'title' => 'Éxito',
+                'icon' => 'success',
+                'message' => 'Crédito creado exitosamente.',
+            ]]);
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->withErrors(['error' => 'Error al guardar el crédito.'])->withInput();
+            return redirect()->back()->with(['flash' => [
+                'title' => 'Error',
+                'icon' => 'error',
+                'message' => 'Error al crear el crédito: ' . $e->getMessage(),
+            ]]);
         }
     }
     function crearCliente(Request $request)

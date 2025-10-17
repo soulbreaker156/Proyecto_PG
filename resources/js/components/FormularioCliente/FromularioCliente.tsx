@@ -5,10 +5,9 @@ import Swal from 'sweetalert2';
 interface Props {
     isOpen: boolean;
     onClose: () => void;
-    onSuccess?: () => void;
 }
 
-export default function FormularioCliente({ isOpen, onClose, onSuccess }: Props) {
+export default function FormularioCliente({ isOpen, onClose}: Props) {
     const { flash } = usePage<{ flash: { title: string; message: string; icon: 'success' | 'error' } }>().props;
  
 
@@ -22,7 +21,7 @@ export default function FormularioCliente({ isOpen, onClose, onSuccess }: Props)
         dpi: null,
     });
 
-    // Detectar flash messages cuando cambian las props
+    // Detectar flash messages
     useEffect(() => {
         if (flash?.icon) {
             Swal.fire({

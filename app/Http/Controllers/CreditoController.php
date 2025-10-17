@@ -41,4 +41,8 @@ class CreditoController extends Controller
             return redirect()->back()->withErrors(['error' => 'Error al obtener los detalles']);
         }
     }
+    function agregarCredito(Request $request)
+    {
+        return Inertia::render('AgregarCredito/AgregarCredito');
+    }
 }

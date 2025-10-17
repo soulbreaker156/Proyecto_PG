@@ -36,4 +36,5 @@ Route::middleware([AccesoPagina::class])->group(function () {
     Route::post('/pedido/crearPedido', [PedidoController::class, 'crearPedido'])->name('pedido.crearPedido');
     Route::get('/creditos', [CreditoController::class, 'index'])->name('creditos.index');
     Route::get('/creditos/detalles', [CreditoController::class, 'detalles'])->name('creditos.detalles');
+    Route::get('/creditos/agregar', [CreditoController::class, 'agregarCredito'])->name('creditos.agregar');
 });

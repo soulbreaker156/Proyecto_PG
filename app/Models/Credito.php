@@ -16,6 +16,7 @@ class Credito extends Model
         'descripcion',
         'fecha_mov',
         'fk_id_usuario',
+        'fk_id_cliente',
     ];
 
 
@@ -23,5 +24,10 @@ class Credito extends Model
     public function usuario()
     {
         return $this->belongsTo(Usuario::class, 'fk_id_usuario', 'id_usuario');
+    }
+    // Relación con el modelo Cliente
+    public function cliente()
+    {
+        return $this->belongsTo(Cliente::class, 'fk_id_cliente', 'id_cliente');
     }
 }

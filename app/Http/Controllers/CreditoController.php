@@ -11,7 +11,7 @@ class CreditoController extends Controller
 {
         function index()
         {
-            $usuarios = Usuario::with('creditos')->get();
+            $usuarios = Usuario::with('creditos')->whereHas('creditos')->get();
             return Inertia::render('Creditos/Creditos', [
                 'usuarios' => $usuarios,
             ]);

@@ -146,4 +146,14 @@ class CreditoController extends Controller
             ]]);
         }
     }
+    function abonar()
+    {
+        $usuario = Usuario::with('creditos')->whereHas('creditos')->get();
+        $cliente = Cliente::with('creditos')->whereHas('creditos')->get();
+        
+        return Inertia::render('AbonarCredito/AbonarCredito', [
+            'usuarios' => $usuario,
+            'clientes' => $cliente,
+        ]);
+    }
 }

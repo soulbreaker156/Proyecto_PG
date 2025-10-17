@@ -6,6 +6,7 @@ import FormularioCliente from "../FormularioCliente/FromularioCliente";
 
 export default function FormularioCreditos({usuarios, clientes}: {usuarios?: Usuario[], clientes?: Cliente[]}) {
 
+    
     // Estado para el modal
     const [modalAbierto, setModalAbierto] = useState(false);
 

@@ -12,11 +12,11 @@ export default function Creditos({ usuarios, clientes }: { usuarios?: any, clien
                         <button onClick={() => router.get('/creditos/agregar')} className="cursor-pointer w-[30%] bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out hover:scale-105">
                             Agregar Crédito
                         </button>
-                        <button className="cursor-pointer w-[30%] bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out hover:scale-105">
-                            Eliminar Crédito
+                        <button onClick={() => router.get('/creditos/abonar')} className="cursor-pointer w-[30%] bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out hover:scale-105">
+                            Abonar Crédito
                         </button>
                         <button className="cursor-pointer w-[30%] bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out hover:scale-105">
-                            Abonar
+                            Abonar Saldo
                         </button>
                     </div>
             </main>

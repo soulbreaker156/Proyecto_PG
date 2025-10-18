@@ -148,12 +148,71 @@ class CreditoController extends Controller
     }
     function abonar()
     {
-        $usuario = Usuario::with('creditos')->whereHas('creditos')->get();
-        $cliente = Cliente::with('creditos')->whereHas('creditos')->get();
-        
+        // Usuarios que tienen créditos (no abonos)
+        $usuarios = Usuario::with('creditos')->whereHas('creditos', function ($query) {
+            $query->where('tipo_mov', 'credito'); // Solo usuarios que tienen créditos
+        })->get();
+
+        // Clientes que tienen créditos (no abonos)  
+        $clientes = Cliente::with('creditos')->whereHas('creditos', function ($query) {
+            $query->where('tipo_mov', 'credito'); // Solo clientes que tienen créditos
+        })->get();
+
         return Inertia::render('AbonarCredito/AbonarCredito', [
-            'usuarios' => $usuario,
-            'clientes' => $cliente,
+            'usuarios' => $usuarios,
+            'clientes' => $clientes,
         ]);
+    }
+    function guardarAbono(Request $request)
+    {
+        $data = $request->validate([
+            'usuario_id' => 'nullable|exists:usuarios,id_usuario',
+            'cliente_id' => 'nullable|exists:clientes,id_cliente',
+            'monto' => 'required|numeric|min:0.01',
+            'descripcion' => 'required|string|max:100',
+        ], [
+            'usuario_id.exists' => 'El usuario seleccionado no es válido.',
+            'cliente_id.exists' => 'El cliente seleccionado no es válido.',
+            'monto.required' => 'El monto es obligatorio.',
+            'monto.numeric' => 'El monto debe ser un número válido.',
+            'monto.min' => 'El monto debe ser al menos 0.01.',
+            'descripcion.required' => 'La descripción es obligatoria.',
+            'descripcion.string' => 'La descripción debe ser una cadena de texto.',
+            'descripcion.max' => 'La descripción no debe exceder los 100 caracteres.',
+        ]);
+
+        try {
+            DB::beginTransaction();
+            if (!$data['usuario_id']) {
+                $credito = new Credito();
+                $credito->tipo_mov = 'abonoCredito';
+                $credito->monto = $data['monto'];
+                $credito->descripcion = $data['descripcion'];
+                $credito->fecha_mov = now();
+                $credito->fk_id_cliente = $data['cliente_id'];
+                $credito->save();
+            } else {
+                $credito = new Credito();
+                $credito->tipo_mov = 'abonoCredito';
+                $credito->monto = $data['monto'];
+                $credito->descripcion = $data['descripcion'];
+                $credito->fecha_mov = now();
+                $credito->fk_id_usuario = $data['usuario_id'];
+                $credito->save();
+            }
+            DB::commit();
+            return redirect()->back()->with(['flash' => [
+                'title' => 'Éxito',
+                'icon' => 'success',
+                'message' => 'Abono registrado exitosamente.',
+            ]]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with(['flash' => [
+                'title' => 'Error',
+                'icon' => 'error',
+                'message' => 'Error al registrar el abono: ' . $e->getMessage(),
+            ]]);
+        }
     }
 }

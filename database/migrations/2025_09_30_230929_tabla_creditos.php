@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('creditos', function (Blueprint $table) {
             $table->id('id_credito');
-            $table->enum('tipo_mov', ['credito', 'abono']);
+            $table->enum('tipo_mov', ['credito', 'abono', 'abonoCredito']);
             $table->decimal('monto', 10, 2);
             $table->string('descripcion', 255)->nullable();
             $table->date('fecha_mov');

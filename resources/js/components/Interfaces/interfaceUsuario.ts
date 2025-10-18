@@ -5,4 +5,5 @@ export interface Usuario {
     direccion: string;
     fk_id_imagen: number;
     fk_id_rol: number;
+    creditos: any[];
 }

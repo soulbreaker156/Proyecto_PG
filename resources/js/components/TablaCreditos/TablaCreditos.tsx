@@ -9,54 +9,81 @@ export default function TablaCreditos({ usuarios, clientes }: { usuarios?: any, 
         const [buscar, setBuscar] = useState('');
 
     // Transformar usuarios
-    const dataUsuarios = (usuarios || []).map((credito: any) => ({
-        id: credito.id_usuario,
-        tipo: 'Usuario',
-        cliente: credito.usuario,
-        apellido: '--',
-        dpi: 'N/A',
-        deuda: credito.creditos
+    const dataUsuarios = (usuarios || []).map((credito: any) => {
+        const totalCreditos = credito.creditos
             .filter((c: any) => c.tipo_mov === 'credito')
-            .reduce((total: number, c: any) => total + parseFloat(c.monto), 0)
-            .toLocaleString('en-US', {style: 'currency', currency: 'GTQ'}),
-        saldo: credito.creditos
+            .reduce((total: number, c: any) => total + parseFloat(c.monto), 0);
+            
+        const totalAbonos = credito.creditos
             .filter((c: any) => c.tipo_mov === 'abono')
-            .reduce((total: number, c: any) => total + parseFloat(c.monto), 0)
-            .toLocaleString('en-US', {style: 'currency', currency: 'GTQ'}),
-        acciones: (
-            <button 
-                onClick={() => router.get('/creditos/detalles', { usuarioId: credito.id_usuario })} 
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
-            >
-                Ver Detalles
-            </button>
-        )
-    }));
+            .reduce((total: number, c: any) => total + parseFloat(c.monto), 0);
+
+        // ✅ Buscar abonoCredito en los créditos del usuario
+        const totalAbonoCredito = credito.creditos
+            .filter((c: any) => c.tipo_mov === 'abonoCredito')
+            .reduce((total: number, c: any) => total + parseFloat(c.monto), 0);
+            
+        const deudaPendiente = totalCreditos - totalAbonoCredito; // ✅ Restar abonoCredito
+        const deudaPendienteAjustada = deudaPendiente < 0 ? 0 : deudaPendiente;
+        return {
+            id: credito.id_usuario,
+            tipo: 'Usuario',
+            cliente: credito.usuario,
+            apellido: '--',
+            dpi: 'N/A',
+            deuda: deudaPendienteAjustada.toLocaleString('en-US', {style: 'currency', currency: 'GTQ'}),
+            saldo: totalAbonos.toLocaleString('en-US', {style: 'currency', currency: 'GTQ'}),
+            abonoCredito: totalAbonoCredito.toLocaleString('en-US', {style: 'currency', currency: 'GTQ'}), // ✅ Mostrar columna abonoCredito
+            acciones: (
+                <button 
+                    onClick={() => router.get('/creditos/detalles', { usuarioId: credito.id_usuario })} 
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
+                >
+                    Ver Detalles
+                </button>
+            )
+        };
+    });
 
     // Transformar clientes (con créditos también)
-    const dataClientes = (clientes || []).map((cliente: any) => ({
-        id: cliente.id_cliente,
-        tipo: 'Cliente',
-        cliente: cliente.nombre,
-        apellido: cliente.apellido,
-        dpi: cliente.dpi,
-        deuda: (cliente.creditos || [])
+    const dataClientes = (clientes || []).map((cliente: any) => {
+        const totalCreditos = (cliente.creditos || [])
             .filter((c: any) => c.tipo_mov === 'credito')
-            .reduce((total: number, c: any) => total + parseFloat(c.monto), 0)
-            .toLocaleString('en-US', {style: 'currency', currency: 'GTQ'}),
-        saldo: (cliente.creditos || [])
+            .reduce((total: number, c: any) => total + parseFloat(c.monto), 0);
+            
+        const totalAbonos = (cliente.creditos || [])
             .filter((c: any) => c.tipo_mov === 'abono')
-            .reduce((total: number, c: any) => total + parseFloat(c.monto), 0)
-            .toLocaleString('en-US', {style: 'currency', currency: 'GTQ'}),
-        acciones: (
-            <button 
-                onClick={() => router.get('/creditos/detalles', { clienteId: cliente.id_cliente })} 
-                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
-            >
-                Ver Detalles
-            </button>
-        )
-    }));
+            .reduce((total: number, c: any) => total + parseFloat(c.monto), 0);
+
+        // ✅ Buscar abonoCredito en los créditos del cliente
+        const totalAbonoCredito = (cliente.creditos || [])
+            .filter((c: any) => c.tipo_mov === 'abonoCredito')
+            .reduce((total: number, c: any) => total + parseFloat(c.monto), 0);
+            
+        const deudaPendiente = totalCreditos - totalAbonoCredito; // ✅ Restar abonoCredito
+        const deudaPendienteAjustada = deudaPendiente < 0 ? 0 : deudaPendiente;
+
+        const saldoDisponible = totalAbonos - totalAbonoCredito;
+        const saldoDisponibleAjustado = saldoDisponible < 0 ? 0 : saldoDisponible;
+        return {
+            id: cliente.id_cliente,
+            tipo: 'Cliente',
+            cliente: cliente.nombre,
+            apellido: cliente.apellido,
+            dpi: cliente.dpi,
+            deuda: deudaPendienteAjustada.toLocaleString('en-US', {style: 'currency', currency: 'GTQ'}),
+            saldo: saldoDisponibleAjustado.toLocaleString('en-US', {style: 'currency', currency: 'GTQ'}),
+            abonoCredito: totalAbonoCredito.toLocaleString('en-US', {style: 'currency', currency: 'GTQ'}), // ✅ Mostrar columna abonoCredito
+            acciones: (
+                <button 
+                    onClick={() => router.get('/creditos/detalles', { clienteId: cliente.id_cliente })} 
+                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
+                >
+                    Ver Detalles
+                </button>
+            )
+        };
+    });
 
     // Combina ambos arrays
     const data = [...dataUsuarios, ...dataClientes];

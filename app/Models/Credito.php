@@ -33,4 +33,9 @@ class Credito extends Model
     {
         return $this->belongsTo(Cliente::class, 'fk_id_cliente', 'id_cliente');
     }
+    //Relacion con el modelo Total
+    public function total()
+    {
+        return $this->belongsTo(Total::class, 'fk_id_total', 'id_total');
+    }   
 }

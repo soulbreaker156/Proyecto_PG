@@ -3,4 +3,5 @@ export interface Cliente {
     nombre: string;
     apellido: string;
     dpi: number;
+    creditos: any[];
 }
